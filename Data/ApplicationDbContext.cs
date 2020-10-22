@@ -17,5 +17,7 @@ namespace Covid.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<DailyCount> DailyCount { get; set; }
     }
 }
