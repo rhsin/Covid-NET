@@ -15,7 +15,7 @@ namespace Covid.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -91,8 +91,8 @@ namespace Covid.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Cases")
-                        .HasColumnType("int");
+                    b.Property<string>("Cases")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("County")
                         .HasColumnType("nvarchar(max)");
@@ -100,11 +100,11 @@ namespace Covid.Data.Migrations
                     b.Property<string>("Date")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Deaths")
-                        .HasColumnType("int");
+                    b.Property<string>("Deaths")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Fips")
-                        .HasColumnType("int");
+                    b.Property<string>("Fips")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");

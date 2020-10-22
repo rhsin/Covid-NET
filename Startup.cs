@@ -11,6 +11,7 @@ using Covid.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Covid.Services;
 
 namespace Covid
 {
@@ -30,8 +31,11 @@ namespace Covid
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
@@ -39,7 +43,10 @@ namespace Covid
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddRazorPages();
 
             // In production, the React files will be served from this directory
@@ -47,6 +54,8 @@ namespace Covid
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddScoped<ICsvImporter, CsvImporter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Covid.Data;
 using Covid.Models;
+using Covid.Services;
 
 namespace Covid.Controllers
 {
@@ -15,10 +15,19 @@ namespace Covid.Controllers
     public class DailyCountsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICsvImporter _csvImporter;
 
-        public DailyCountsController(ApplicationDbContext context)
+        public DailyCountsController(ApplicationDbContext context, ICsvImporter csvImporter)
         {
             _context = context;
+            _csvImporter = csvImporter;
+        }
+
+        // POST: api/DailyCounts/Import
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportDailyCounts()
+        {
+            return Ok(await _csvImporter.ImportDailyCounts(_context));
         }
 
         // GET: api/DailyCounts

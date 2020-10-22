@@ -11,8 +11,8 @@ namespace Covid.Models
         public string Date { get; set; }
         public string County { get; set; }
         public string State { get; set; }
-        public int Fips { get; set; }
-        public int Cases { get; set; }
-        public int Deaths { get; set; }
+        public string Fips { get; set; }
+        public string Cases { get; set; }
+        public string Deaths { get; set; }
     }
 }
