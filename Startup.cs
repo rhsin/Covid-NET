@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Covid.Services;
+using Covid.Repositories;
 
 namespace Covid
 {
@@ -56,6 +57,7 @@ namespace Covid
             });
 
             services.AddScoped<ICsvImporter, CsvImporter>();
+            services.AddScoped<IDailyCountRepository, DailyCountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

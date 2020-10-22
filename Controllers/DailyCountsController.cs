@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Covid.Data;
 using Covid.Models;
 using Covid.Services;
+using Covid.Repositories;
 
 namespace Covid.Controllers
 {
@@ -16,11 +17,14 @@ namespace Covid.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ICsvImporter _csvImporter;
+        private readonly IDailyCountRepository _dailyCountRepository;
 
-        public DailyCountsController(ApplicationDbContext context, ICsvImporter csvImporter)
+        public DailyCountsController(ApplicationDbContext context, ICsvImporter csvImporter,
+            IDailyCountRepository dailyCountRepository)
         {
             _context = context;
             _csvImporter = csvImporter;
+            _dailyCountRepository = dailyCountRepository;
         }
 
         // POST: api/DailyCounts/Import
@@ -34,7 +38,18 @@ namespace Covid.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DailyCount>>> GetDailyCount()
         {
-            return await _context.DailyCount.ToListAsync();
+            return await _dailyCountRepository.GetDailyCounts()
+                .Take(100)
+                .ToListAsync();
+        }
+
+        // GET: api/DailyCounts/Filter
+        [HttpGet("Filter")]
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Filter(string county, string state)
+        {
+            return await _dailyCountRepository.Filter(county, state)
+                .Take(100)
+                .ToListAsync();
         }
 
         // GET: api/DailyCounts/5
