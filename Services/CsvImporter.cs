@@ -25,7 +25,6 @@ namespace Covid.Services
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 csv.Configuration.RegisterClassMap<DailyCountMap>();
-                csv.Configuration.TrimOptions = TrimOptions.Trim;
                 var dailyCounts = csv.GetRecords<DailyCount>().ToList();
 
                 try
@@ -37,6 +36,10 @@ namespace Covid.Services
                 catch (Exception ex)
                 {
                     return "Import Unsuccessful! Error: " + ex.Message;
+                }
+                finally
+                {
+                    context.ChangeTracker.AutoDetectChangesEnabled = true;
                 }
 
                 return "DailyCount Import Successful!";

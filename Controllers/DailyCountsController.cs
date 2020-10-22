@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Covid.Data;
+﻿using Covid.Data;
 using Covid.Models;
 using Covid.Services;
 using Covid.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Covid.Controllers
 {
@@ -27,29 +27,40 @@ namespace Covid.Controllers
             _dailyCountRepository = dailyCountRepository;
         }
 
-        // POST: api/DailyCounts/Import
-        [HttpPost("Import")]
-        public async Task<IActionResult> ImportDailyCounts()
-        {
-            return Ok(await _csvImporter.ImportDailyCounts(_context));
-        }
-
         // GET: api/DailyCounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DailyCount>>> GetDailyCount()
         {
-            return await _dailyCountRepository.GetDailyCounts()
-                .Take(100)
-                .ToListAsync();
+            var dailyCounts = await _dailyCountRepository.GetDailyCounts().ToListAsync();
+
+            return this.ApiResponse("All DailyCounts", dailyCounts);
         }
 
         // GET: api/DailyCounts/Filter
         [HttpGet("Filter")]
         public async Task<ActionResult<IEnumerable<DailyCount>>> Filter(string county, string state)
         {
-            return await _dailyCountRepository.Filter(county, state)
-                .Take(100)
-                .ToListAsync();
+            var dailyCounts = await _dailyCountRepository.Filter(county, state);
+
+            return this.ApiResponse("Filter By County, State", dailyCounts);
+        }
+
+        public ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,
+            IEnumerable<DailyCount> dailyCounts)
+        {
+            return Ok(new
+            {
+                Method = method,
+                Count = dailyCounts.Count(),
+                Data = dailyCounts
+            });
+        }
+
+        // POST: api/DailyCounts/Import
+        [HttpPost("Import")]
+        public async Task<ActionResult<string>> ImportDailyCounts()
+        {
+            return Ok(await _csvImporter.ImportDailyCounts(_context));
         }
 
         // GET: api/DailyCounts/5
