@@ -2,10 +2,12 @@
 using Covid.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Covid.Services
@@ -23,13 +25,14 @@ namespace Covid.Services
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 csv.Configuration.RegisterClassMap<DailyCountMap>();
-                var dailyCounts = csv.GetRecords<DailyCount>();
+                csv.Configuration.TrimOptions = TrimOptions.Trim;
+                var dailyCounts = csv.GetRecords<DailyCount>().ToList();
 
                 try
                 {
-                    context.Database.SetCommandTimeout(0);
-                    context.DailyCount.AddRange(dailyCounts);
-                    await context.SaveChangesAsync();
+                    context.Database.SetCommandTimeout(180);
+                    context.ChangeTracker.AutoDetectChangesEnabled = false;
+                    await context.BulkInsertAsync(dailyCounts);
                 }
                 catch (Exception ex)
                 {

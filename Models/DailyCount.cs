@@ -8,11 +8,11 @@ namespace Covid.Models
     public class DailyCount
     {
         public int Id { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public string County { get; set; }
         public string State { get; set; }
-        public string Fips { get; set; }
-        public string Cases { get; set; }
-        public string Deaths { get; set; }
+        public float? Fips { get; set; }
+        public int? Cases { get; set; }
+        public int? Deaths { get; set; }
     }
 }

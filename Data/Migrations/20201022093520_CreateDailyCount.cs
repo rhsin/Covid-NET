@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Covid.Data.Migrations
 {
@@ -12,10 +13,10 @@ namespace Covid.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
                     County = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    Fips = table.Column<int>(nullable: false),
+                    Fips = table.Column<float>(nullable: false),
                     Cases = table.Column<int>(nullable: false),
                     Deaths = table.Column<int>(nullable: false)
                 },

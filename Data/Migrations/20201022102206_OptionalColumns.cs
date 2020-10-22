@@ -2,25 +2,25 @@
 
 namespace Covid.Data.Migrations
 {
-    public partial class ChangeColumnsString : Migration
+    public partial class OptionalColumns : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AlterColumn<float>(
                 name: "Fips",
                 table: "DailyCount",
                 nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
+                oldClrType: typeof(float),
+                oldType: "real");
 
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AlterColumn<int>(
                 name: "Deaths",
                 table: "DailyCount",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
 
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AlterColumn<int>(
                 name: "Cases",
                 table: "DailyCount",
                 nullable: true,
@@ -30,12 +30,12 @@ namespace Covid.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.AlterColumn<float>(
                 name: "Fips",
                 table: "DailyCount",
-                type: "int",
+                type: "real",
                 nullable: false,
-                oldClrType: typeof(string),
+                oldClrType: typeof(float),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
@@ -43,7 +43,7 @@ namespace Covid.Data.Migrations
                 table: "DailyCount",
                 type: "int",
                 nullable: false,
-                oldClrType: typeof(string),
+                oldClrType: typeof(int),
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
@@ -51,7 +51,7 @@ namespace Covid.Data.Migrations
                 table: "DailyCount",
                 type: "int",
                 nullable: false,
-                oldClrType: typeof(string),
+                oldClrType: typeof(int),
                 oldNullable: true);
         }
     }

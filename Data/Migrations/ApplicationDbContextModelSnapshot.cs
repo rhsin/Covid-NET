@@ -91,20 +91,20 @@ namespace Covid.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Cases")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Cases")
+                        .HasColumnType("int");
 
                     b.Property<string>("County")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Deaths")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Deaths")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Fips")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float?>("Fips")
+                        .HasColumnType("real");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");

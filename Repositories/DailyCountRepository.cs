@@ -44,7 +44,7 @@ namespace Covid.Repositories
                 query = query.Where(dc => dc.State.Contains(state));
             }
 
-            return query;
+            return query.OrderBy(dc => dc.County);
         }
     }
 }

@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Covid.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201022022513_CreateDailyCount")]
+    [Migration("20201022093520_CreateDailyCount")]
     partial class CreateDailyCount
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -99,14 +99,14 @@ namespace Covid.Data.Migrations
                     b.Property<string>("County")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Deaths")
                         .HasColumnType("int");
 
-                    b.Property<int>("Fips")
-                        .HasColumnType("int");
+                    b.Property<float>("Fips")
+                        .HasColumnType("real");
 
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
