@@ -16,6 +16,8 @@ namespace Covid.Repositories
         public Task<IEnumerable<DailyCount>> Filter(string county, string state);
         public Task<IEnumerable<DailyCount>> Range(string column, int min, int max);
         public Task<IEnumerable<DailyCount>> DateRange(int month);
+        public Task<IEnumerable<DailyCount>> Query(string county, string state, string order,
+            int month, string column, int limit);
     }
 
     public class DailyCountRepository : IDailyCountRepository
@@ -57,7 +59,7 @@ namespace Covid.Repositories
 
         public async Task<IEnumerable<DailyCount>> Range(string column, int min, int max)
         {
-            var parameters = new { Column = column, Min = min, Max = max };
+            var parameters = new { Min = min, Max = max };
 
             var sql = $@"SELECT TOP 100 *
                       FROM DailyCount
@@ -80,6 +82,32 @@ namespace Covid.Repositories
                       FROM DailyCount
                       WHERE MONTH(Date) = @Month
                       ORDER BY Date";
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
+
+                return dailyCounts;
+            }
+        }
+
+        public async Task<IEnumerable<DailyCount>> Query(string county, string state, string order,
+            int month, string column, int limit)
+        {
+            var parameters = new {
+                County = $"%{county}%",
+                State = $"%{state}%",
+                Month = month,
+                Order = order,
+                Limit = limit
+            };
+
+            var sql = $@"SELECT TOP (@Limit) *
+                        FROM DailyCount 
+                        WHERE LOWER(County) LIKE LOWER(@County) 
+                        AND LOWER(State) LIKE LOWER(@State)
+                        AND MONTH(Date) = @Month
+                        ORDER BY {column} {order}";
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {

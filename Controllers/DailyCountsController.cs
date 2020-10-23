@@ -43,12 +43,12 @@ namespace Covid.Controllers
         {
             var dailyCounts = await _dailyCountRepository.Filter(county, state);
 
-            return this.ApiResponse("Filter By County, State", dailyCounts);
+            return this.ApiResponse($"Filter By {county}, {state}", dailyCounts);
         }
 
         // GET: api/DailyCounts/Range/Cases
-        [HttpGet("Range/{column}")]
-        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column, int min, int max)
+        [HttpGet("Range/{column?}")]
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases", int min = 1000, int max = 2000)
         {
             TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
@@ -64,6 +64,20 @@ namespace Covid.Controllers
             var dailyCounts = await _dailyCountRepository.DateRange(month);
 
             return this.ApiResponse($"Dates In Month {month}", dailyCounts);
+        }
+
+        // GET: api/DailyCounts/Query
+        [HttpGet("Query")]
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Query(string county, string state, string order,
+            int month = 9, string column = "Date", int limit = 100)
+        {
+            var dailyCounts = await _dailyCountRepository.Query(county, state, order, month, column, limit);
+
+            return this.ApiResponse(
+                $"Query By County: {county}, State: {state}, Order: {order}," +
+                $" Month: {month}, Column: {column}, Limit: {limit}",
+                dailyCounts
+            );
         }
 
         public ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,
