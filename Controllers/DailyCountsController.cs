@@ -48,7 +48,7 @@ namespace Covid.Controllers
 
         // GET: api/DailyCounts/Range/Cases
         [HttpGet("Range/{column?}")]
-        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases", int min = 1000, int max = 2000)
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases", int min = 0, int max = 200000)
         {
             TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
