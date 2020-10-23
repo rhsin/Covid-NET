@@ -14,6 +14,7 @@ namespace Covid.Repositories
     {
         public IQueryable<DailyCount> GetDailyCounts();
         public Task<IEnumerable<DailyCount>> Filter(string county, string state);
+        public Task<IEnumerable<DailyCount>> Range(string column, int min, int max);
     }
 
     public class DailyCountRepository : IDailyCountRepository
@@ -42,7 +43,25 @@ namespace Covid.Repositories
             var sql = @"SELECT TOP 200 *
                         FROM DailyCount 
                         WHERE LOWER(County) LIKE LOWER(@County) 
-                        AND LOWER(State) LIKE LOWER(@State)";
+                        AND LOWER(State) LIKE LOWER(@State)
+                        ORDER BY County";
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
+
+                return dailyCounts;
+            }
+        }
+
+        public async Task<IEnumerable<DailyCount>> Range(string column, int min, int max)
+        {
+            var parameters = new { Column = column, Min = min, Max = max };
+
+            var sql = $@"SELECT TOP 100 *
+                      FROM DailyCount
+                      WHERE {column} BETWEEN @Min AND @Max
+                      ORDER BY {column} DESC";
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {

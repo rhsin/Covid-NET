@@ -45,6 +45,17 @@ namespace Covid.Controllers
             return this.ApiResponse("Filter By County, State", dailyCounts);
         }
 
+        // GET: api/DailyCounts/Range/Cases
+        [HttpGet("Range/{column}")]
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string col, int min, int max)
+        {
+            string column = "Cases";
+
+            var dailyCounts = await _dailyCountRepository.Range(column, min, max);
+
+            return this.ApiResponse($"Range By {column}", dailyCounts);
+        }
+
         public ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,
             IEnumerable<DailyCount> dailyCounts)
         {
