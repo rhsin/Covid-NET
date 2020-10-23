@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,13 +48,22 @@ namespace Covid.Controllers
 
         // GET: api/DailyCounts/Range/Cases
         [HttpGet("Range/{column}")]
-        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string col, int min, int max)
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column, int min, int max)
         {
-            string column = "Cases";
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
-            var dailyCounts = await _dailyCountRepository.Range(column, min, max);
+            var dailyCounts = await _dailyCountRepository.Range(ti.ToTitleCase(column), min, max);
 
             return this.ApiResponse($"Range By {column}", dailyCounts);
+        }
+
+        // GET: api/DailyCounts/DateRange/5
+        [HttpGet("DateRange/{month}")]
+        public async Task<ActionResult<IEnumerable<DailyCount>>> DateRange(int month)
+        {
+            var dailyCounts = await _dailyCountRepository.DateRange(month);
+
+            return this.ApiResponse($"Dates In Month {month}", dailyCounts);
         }
 
         public ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,

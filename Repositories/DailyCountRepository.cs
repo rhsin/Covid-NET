@@ -15,6 +15,7 @@ namespace Covid.Repositories
         public IQueryable<DailyCount> GetDailyCounts();
         public Task<IEnumerable<DailyCount>> Filter(string county, string state);
         public Task<IEnumerable<DailyCount>> Range(string column, int min, int max);
+        public Task<IEnumerable<DailyCount>> DateRange(int month);
     }
 
     public class DailyCountRepository : IDailyCountRepository
@@ -62,6 +63,23 @@ namespace Covid.Repositories
                       FROM DailyCount
                       WHERE {column} BETWEEN @Min AND @Max
                       ORDER BY {column} DESC";
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
+
+                return dailyCounts;
+            }
+        }
+
+        public async Task<IEnumerable<DailyCount>> DateRange(int month)
+        {
+            var parameters = new { Month = month };
+
+            var sql = $@"SELECT TOP 50 *
+                      FROM DailyCount
+                      WHERE MONTH(Date) = @Month
+                      ORDER BY Date";
 
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
