@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { urlQuery, monthList } from'./AppConstants';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function SearchForm(props) {
@@ -9,14 +10,10 @@ function SearchForm(props) {
   const [month, setMonth] = useState(null);
   const [order, setOrder] = useState('');
 
-  const monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September'];
-
-  const url = `https://localhost:44321/api/DailyCounts/Query?&county=${county}&state=${state}&month=${month}&order=${order}`;
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading();
-    fetchData(url);
+    fetchData(urlQuery(county, state, month, order));
   };
 
   return (
