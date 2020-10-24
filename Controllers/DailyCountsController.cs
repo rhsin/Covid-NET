@@ -2,6 +2,7 @@
 using Covid.Models;
 using Covid.Services;
 using Covid.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Covid.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DailyCountsController : ControllerBase
