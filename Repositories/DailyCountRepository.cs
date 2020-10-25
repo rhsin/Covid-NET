@@ -13,8 +13,6 @@ namespace Covid.Repositories
     public interface IDailyCountRepository
     {
         public IQueryable<DailyCount> GetDailyCounts();
-        public Task AddToCountList(int listId, int countId);
-        public Task RemoveFromCountList(int listId, int countId);
         public Task<IEnumerable<DailyCount>> Filter(string county, string state);
         public Task<IEnumerable<DailyCount>> Range(string column, int min, int max);
         public Task<IEnumerable<DailyCount>> DateRange(int month);
@@ -42,42 +40,15 @@ namespace Covid.Repositories
             return dailyCounts.Take(100);
         }
 
-        public async Task AddToCountList(int listId, int countId)
-        {
-            var parameters = new { ListId = listId, CountId = countId };
-
-            var sql = @"INSERT INTO CountListDailyCount
-                        VALUES (@ListId, @CountId)";
-
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                await connection.QueryAsync<DailyCount>(sql, parameters);
-            }
-        }
-
-        public async Task RemoveFromCountList(int listId, int countId)
-        {
-            var parameters = new { ListId = listId, CountId = countId };
-
-            var sql = @"DELETE FROM CountListDailyCount
-                        WHERE CountListId = @ListId
-                        AND DailyCountId = @CountId";
-
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                await connection.QueryAsync<DailyCount>(sql, parameters);
-            }
-        }
-
         public async Task<IEnumerable<DailyCount>> Filter(string county, string state)
         {
             var parameters = new { County = $"%{county}%", State = $"%{state}%" };
 
-            var sql = @"SELECT TOP 200 *
-                        FROM DailyCount 
-                        WHERE LOWER(County) LIKE LOWER(@County) 
-                        AND LOWER(State) LIKE LOWER(@State)
-                        ORDER BY County";
+            string sql = @"SELECT TOP 200 *
+                           FROM DailyCount 
+                           WHERE LOWER(County) LIKE LOWER(@County) 
+                           AND LOWER(State) LIKE LOWER(@State)
+                           ORDER BY County";
 
             return await this.ExecuteQuery(sql, parameters);
         }
@@ -86,10 +57,10 @@ namespace Covid.Repositories
         {
             var parameters = new { Min = min, Max = max };
 
-            var sql = $@"SELECT TOP 100 *
-                         FROM DailyCount
-                         WHERE {column} BETWEEN @Min AND @Max
-                         ORDER BY {column} DESC";
+            string sql = $@"SELECT TOP 100 *
+                            FROM DailyCount
+                            WHERE {column} BETWEEN @Min AND @Max
+                            ORDER BY {column} DESC";
 
             return await this.ExecuteQuery(sql, parameters);
         }
@@ -98,10 +69,10 @@ namespace Covid.Repositories
         {
             var parameters = new { Month = month };
 
-            var sql = $@"SELECT TOP 50 *
-                         FROM DailyCount
-                         WHERE MONTH(Date) = @Month
-                         ORDER BY Date";
+            string sql = $@"SELECT TOP 50 *
+                            FROM DailyCount
+                            WHERE MONTH(Date) = @Month
+                            ORDER BY Date";
 
             return await this.ExecuteQuery(sql, parameters);
         }
@@ -117,23 +88,23 @@ namespace Covid.Repositories
                 Limit = limit
             };
 
-            var sql = $@"SELECT TOP (@Limit) *
-                         FROM DailyCount 
-                         WHERE LOWER(County) LIKE LOWER(@County) 
-                         AND LOWER(State) LIKE LOWER(@State)
-                         AND MONTH(Date) = @Month
-                         ORDER BY {column} {order}";
+            string sql = $@"SELECT TOP (@Limit) *
+                            FROM DailyCount 
+                            WHERE LOWER(County) LIKE LOWER(@County) 
+                            AND LOWER(State) LIKE LOWER(@State)
+                            AND MONTH(Date) = @Month
+                            ORDER BY {column} {order}";
 
             return await this.ExecuteQuery(sql, parameters);
         }
 
         public async Task<IEnumerable<DailyCount>> GetMax(string column)
         {
-            var sql = $@"SELECT *
-                         FROM DailyCount
-                         WHERE {column} = 
-                         (SELECT MAX({column})
-                         FROM DailyCount)";
+            string sql = $@"SELECT *
+                            FROM DailyCount
+                            WHERE {column} = 
+                            (SELECT MAX({column})
+                            FROM DailyCount)";
 
             return await this.ExecuteQuery(sql, null);
         }

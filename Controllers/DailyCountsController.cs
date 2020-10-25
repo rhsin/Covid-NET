@@ -38,24 +38,6 @@ namespace Covid.Controllers
             return this.ApiResponse("All DailyCounts", dailyCounts);
         }
 
-        // POST: api/DailyCounts/CountList/Add/5/1
-        [HttpPost("CountList/Add/{listId}/{countId}")]
-        public async Task<ActionResult> AddToCountList(int listId, int countId)
-        {
-            await _dailyCountRepository.AddToCountList(listId, countId);
-
-            return Ok("DailyCount Added To CountList!");
-        }
-
-        // POST: api/DailyCounts/CountList/Remove/5/1
-        [HttpPost("CountList/Remove/{listId}/{countId}")]
-        public async Task<ActionResult> RemoveFromCountList(int listId, int countId)
-        {
-            await _dailyCountRepository.RemoveFromCountList(listId, countId);
-
-            return Ok("DailyCount Removed From CountList!");
-        }
-
         // GET: api/DailyCounts/Filter
         [HttpGet("Filter")]
         public async Task<ActionResult<IEnumerable<DailyCount>>> Filter(string county, string state)

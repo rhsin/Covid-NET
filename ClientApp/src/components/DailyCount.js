@@ -2,25 +2,41 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import authService from './api-authorization/AuthorizeService'
 import SearchForm from './SearchForm';
-import { url } from'./AppConstants';
+import { url, listUrl } from'./AppConstants';
+import { Button } from 'reactstrap';
 
 function DailyCount() {
   const [dailyCounts, setDailyCounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async (url) => {
-    const token = await authService.getAccessToken();
-    const response = await axios.get(url, {
-      headers: {'Authorization': `Bearer ${token}` }
-    })
-    .catch(error => console.log(error));
-    setDailyCounts(response.data.data);
+    try {
+      const token = await authService.getAccessToken();
+      const response = await axios.get(url, {
+        headers: {'Authorization': `Bearer ${token}` }
+      })
+      setDailyCounts(response.data.data);
+    } catch (error) {
+      console.log(error.message);
+    }
     setLoading(false);
   };
 
   useEffect(()=> {
     fetchData(url);
   }, []);
+
+  const handleClick = async (action, id) => {
+    try {
+      const token = await authService.getAccessToken();
+      const response = await axios.post(listUrl + `${action}/5/${id}`, {
+        headers: {'Authorization': `Bearer ${token}` }
+      })
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <>
@@ -41,6 +57,8 @@ function DailyCount() {
             <th>State</th>
             <th>Cases</th>
             <th>Deaths</th>
+            <th>Save</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -51,6 +69,16 @@ function DailyCount() {
               <td>{dailyCount.state}</td>
               <td>{dailyCount.cases}</td>
               <td>{dailyCount.deaths}</td>
+              <td>
+                <Button onClick={()=> handleClick('Add', dailyCount.id)}>
+                  Save
+                </Button>
+              </td>
+              <td>
+                <Button onClick={()=> handleClick('Remove', dailyCount.id)}>
+                  Remove
+                </Button>
+              </td>
             </tr>
           )}
         </tbody>
