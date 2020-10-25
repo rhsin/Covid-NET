@@ -3,14 +3,10 @@ using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Covid.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<AppUser>
     {
         public ApplicationDbContext(
             DbContextOptions options,
@@ -18,6 +14,17 @@ namespace Covid.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CountListDailyCount>()
+                .HasKey(cd => new { cd.CountListId, cd.DailyCountId });
+        }
+
+        public DbSet<AppUser> AppUser { get; set; }
+        public DbSet<CountList> CountList { get; set; }
         public DbSet<DailyCount> DailyCount { get; set; }
+        public DbSet<CountListDailyCount> CountListDailyCount { get; set; }
     }
 }

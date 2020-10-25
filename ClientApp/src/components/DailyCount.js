@@ -26,12 +26,12 @@ function DailyCount() {
     <>
       {loading && <p><em>Loading...</em></p>}
       <div>
-        <h1 id='covidTable' >COVID Daily Counts</h1>
+        <h1 id='covidTable'>COVID Daily Counts</h1>
         <p>This component demonstrates fetching data from the server.</p>
       </div>
       <SearchForm
-      setLoading={()=> setLoading(!loading)}
-      fetchData={(url)=> fetchData(url)} 
+        setLoading={()=> setLoading(!loading)}
+        fetchData={(url)=> fetchData(url)} 
       />
       <table className='table table-striped' aria-labelledby='covidTable'>
         <thead>
