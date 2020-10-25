@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -70,9 +69,7 @@ namespace Covid.Controllers
         [HttpGet("Range/{column?}")]
         public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases", int min = 0, int max = 200000)
         {
-            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
-
-            var dailyCounts = await _dailyCountRepository.Range(ti.ToTitleCase(column), min, max);
+            var dailyCounts = await _dailyCountRepository.Range(column, min, max);
 
             return this.ApiResponse($"Range By {column}", dailyCounts);
         }
@@ -98,6 +95,15 @@ namespace Covid.Controllers
                 $" Month: {month}, Column: {column}, Limit: {limit}",
                 dailyCounts
             );
+        }
+
+        // GET: api/DailyCounts/Max/Cases
+        [HttpGet("Max/{column?}")]
+        public async Task<ActionResult<IEnumerable<DailyCount>>> GetMax(string column = "Cases")
+        {
+            var dailyCount = await _dailyCountRepository.GetMax(column);
+
+            return this.ApiResponse($"Max {column}", dailyCount);
         }
 
         public ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,

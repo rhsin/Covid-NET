@@ -20,6 +20,7 @@ namespace Covid.Repositories
         public Task<IEnumerable<DailyCount>> DateRange(int month);
         public Task<IEnumerable<DailyCount>> Query(string county, string state, string order,
             int month, string column, int limit);
+        public Task<IEnumerable<DailyCount>> GetMax(string column);
     }
 
     public class DailyCountRepository : IDailyCountRepository
@@ -86,9 +87,9 @@ namespace Covid.Repositories
             var parameters = new { Min = min, Max = max };
 
             var sql = $@"SELECT TOP 100 *
-                      FROM DailyCount
-                      WHERE {column} BETWEEN @Min AND @Max
-                      ORDER BY {column} DESC";
+                         FROM DailyCount
+                         WHERE {column} BETWEEN @Min AND @Max
+                         ORDER BY {column} DESC";
 
             return await this.ExecuteQuery(sql, parameters);
         }
@@ -98,9 +99,9 @@ namespace Covid.Repositories
             var parameters = new { Month = month };
 
             var sql = $@"SELECT TOP 50 *
-                      FROM DailyCount
-                      WHERE MONTH(Date) = @Month
-                      ORDER BY Date";
+                         FROM DailyCount
+                         WHERE MONTH(Date) = @Month
+                         ORDER BY Date";
 
             return await this.ExecuteQuery(sql, parameters);
         }
@@ -117,13 +118,24 @@ namespace Covid.Repositories
             };
 
             var sql = $@"SELECT TOP (@Limit) *
-                        FROM DailyCount 
-                        WHERE LOWER(County) LIKE LOWER(@County) 
-                        AND LOWER(State) LIKE LOWER(@State)
-                        AND MONTH(Date) = @Month
-                        ORDER BY {column} {order}";
+                         FROM DailyCount 
+                         WHERE LOWER(County) LIKE LOWER(@County) 
+                         AND LOWER(State) LIKE LOWER(@State)
+                         AND MONTH(Date) = @Month
+                         ORDER BY {column} {order}";
 
             return await this.ExecuteQuery(sql, parameters);
+        }
+
+        public async Task<IEnumerable<DailyCount>> GetMax(string column)
+        {
+            var sql = $@"SELECT *
+                         FROM DailyCount
+                         WHERE {column} = 
+                         (SELECT MAX({column})
+                         FROM DailyCount)";
+
+            return await this.ExecuteQuery(sql, null);
         }
 
         private async Task<IEnumerable<DailyCount>> ExecuteQuery(string sql, object parameters)
