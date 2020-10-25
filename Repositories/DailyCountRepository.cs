@@ -13,6 +13,8 @@ namespace Covid.Repositories
     public interface IDailyCountRepository
     {
         public IQueryable<DailyCount> GetDailyCounts();
+        public Task AddToCountList(int listId, int countId);
+        public Task RemoveFromCountList(int listId, int countId);
         public Task<IEnumerable<DailyCount>> Filter(string county, string state);
         public Task<IEnumerable<DailyCount>> Range(string column, int min, int max);
         public Task<IEnumerable<DailyCount>> DateRange(int month);
@@ -39,6 +41,33 @@ namespace Covid.Repositories
             return dailyCounts.Take(100);
         }
 
+        public async Task AddToCountList(int listId, int countId)
+        {
+            var parameters = new { ListId = listId, CountId = countId };
+
+            var sql = @"INSERT INTO CountListDailyCount
+                        VALUES (@ListId, @CountId)";
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.QueryAsync<DailyCount>(sql, parameters);
+            }
+        }
+
+        public async Task RemoveFromCountList(int listId, int countId)
+        {
+            var parameters = new { ListId = listId, CountId = countId };
+
+            var sql = @"DELETE FROM CountListDailyCount
+                        WHERE CountListId = @ListId
+                        AND DailyCountId = @CountId";
+
+            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
+            {
+                await connection.QueryAsync<DailyCount>(sql, parameters);
+            }
+        }
+
         public async Task<IEnumerable<DailyCount>> Filter(string county, string state)
         {
             var parameters = new { County = $"%{county}%", State = $"%{state}%" };
@@ -49,12 +78,7 @@ namespace Covid.Repositories
                         AND LOWER(State) LIKE LOWER(@State)
                         ORDER BY County";
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
-
-                return dailyCounts;
-            }
+            return await this.ExecuteQuery(sql, parameters);
         }
 
         public async Task<IEnumerable<DailyCount>> Range(string column, int min, int max)
@@ -66,12 +90,7 @@ namespace Covid.Repositories
                       WHERE {column} BETWEEN @Min AND @Max
                       ORDER BY {column} DESC";
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
-
-                return dailyCounts;
-            }
+            return await this.ExecuteQuery(sql, parameters);
         }
 
         public async Task<IEnumerable<DailyCount>> DateRange(int month)
@@ -83,12 +102,7 @@ namespace Covid.Repositories
                       WHERE MONTH(Date) = @Month
                       ORDER BY Date";
 
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
-
-                return dailyCounts;
-            }
+            return await this.ExecuteQuery(sql, parameters);
         }
 
         public async Task<IEnumerable<DailyCount>> Query(string county, string state, string order,
@@ -109,6 +123,11 @@ namespace Covid.Repositories
                         AND MONTH(Date) = @Month
                         ORDER BY {column} {order}";
 
+            return await this.ExecuteQuery(sql, parameters);
+        }
+
+        private async Task<IEnumerable<DailyCount>> ExecuteQuery(string sql, object parameters)
+        {
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
                 var dailyCounts = await connection.QueryAsync<DailyCount>(sql, parameters);
@@ -118,22 +137,3 @@ namespace Covid.Repositories
         }
     }
 }
-
-
-//public IQueryable<DailyCount> Filter(string county, string state)
-//{
-//    var dailyCounts = from dc in _context.DailyCount
-//                select dc;
-
-//    if (!String.IsNullOrEmpty(county))
-//    {
-//        dailyCounts = dailyCounts.Where(dc => dc.County.Contains(county));
-//    }
-
-//    if (!String.IsNullOrEmpty(state))
-//    {
-//        dailyCounts = dailyCounts.Where(dc => dc.State.Contains(state));
-//    }
-
-//    return dailyCounts.OrderBy(dc => dc.County);
-//}
