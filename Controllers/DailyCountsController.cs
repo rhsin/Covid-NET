@@ -88,17 +88,6 @@ namespace Covid.Controllers
             return this.ApiResponse($"Max {column}", dailyCount);
         }
 
-        public ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,
-            IEnumerable<DailyCount> dailyCounts)
-        {
-            return Ok(new
-            {
-                Method = method,
-                Count = dailyCounts.Count(),
-                Data = dailyCounts
-            });
-        }
-
         // POST: api/DailyCounts/Import
         [HttpPost("Import")]
         public async Task<ActionResult<string>> ImportDailyCounts()
@@ -178,6 +167,17 @@ namespace Covid.Controllers
             await _context.SaveChangesAsync();
 
             return dailyCount;
+        }
+
+        private ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,
+            IEnumerable<DailyCount> dailyCounts)
+        {
+            return Ok(new
+            {
+                Method = method,
+                Count = dailyCounts.Count(),
+                Data = dailyCounts
+            });
         }
 
         private bool DailyCountExists(int id)

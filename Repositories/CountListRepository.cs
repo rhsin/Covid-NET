@@ -33,7 +33,7 @@ namespace Covid.Repositories
         {
             return _context.CountList
                 .Include(cl => cl.CountListDailyCounts)
-                .ThenInclude(cd => cd.CountList);
+                .ThenInclude(cd => cd.DailyCount);
         }
 
         public async Task AddDailyCount(int listId, int countId)

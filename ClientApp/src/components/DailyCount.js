@@ -9,11 +9,15 @@ function DailyCount() {
   const [dailyCounts, setDailyCounts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(()=> {
+    fetchData(url);
+  }, []);
+
   const fetchData = async (url) => {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.get(url, {
-        headers: {'Authorization': `Bearer ${token}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       })
       setDailyCounts(response.data.data);
     } catch (error) {
@@ -22,15 +26,12 @@ function DailyCount() {
     setLoading(false);
   };
 
-  useEffect(()=> {
-    fetchData(url);
-  }, []);
-
   const handleClick = async (action, id) => {
     try {
       const token = await authService.getAccessToken();
-      const response = await axios.post(listUrl + `${action}/5/${id}`, {
-        headers: {'Authorization': `Bearer ${token}` }
+      const response = await axios.post(
+        listUrl + `DailyCount/${action}/5/${id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
       })
       console.log(response.data);
     } catch (error) {
