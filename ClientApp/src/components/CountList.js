@@ -27,11 +27,11 @@ function CountList() {
     setLoading(false);
   };
 
-  const handleClick = async (action, id) => {
+  const handleClick = async (action, listId, id) => {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.post(
-        listUrl + `DailyCount/${action}/5/${id}`, {
+        listUrl + `DailyCount/${action}/${listId}/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       console.log(response.data);
@@ -72,7 +72,9 @@ function CountList() {
                 <td>{item.dailyCount.cases}</td>
                 <td>{item.dailyCount.deaths}</td>
                 <td>
-                  <Button onClick={()=> handleClick('Remove', item.dailyCount.id)}>
+                  <Button
+                    onClick={()=> handleClick('Remove', 5, item.dailyCount.id)}
+                  >
                     Remove
                   </Button>
                 </td>

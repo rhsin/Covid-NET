@@ -13,7 +13,7 @@ namespace Covid.Repositories
 {
     public interface ICountListRepository
     {
-        public IQueryable<CountList> GetCountLists();
+        public IQueryable<CountListDTO> GetCountLists();
         public Task AddDailyCount(int listId, int countId);
         public Task RemoveDailyCount(int listId, int countId);
     }
@@ -29,11 +29,23 @@ namespace Covid.Repositories
             _config = config;
         }
 
-        public IQueryable<CountList> GetCountLists()
+        public IQueryable<CountListDTO> GetCountLists()
         {
             return _context.CountList
                 .Include(cl => cl.CountListDailyCounts)
-                .ThenInclude(cd => cd.DailyCount);
+                .ThenInclude(cd => cd.DailyCount)
+                .Include(cl => cl.AppUser)
+                .Select(cl => new CountListDTO
+                {
+                    Id = cl.Id,
+                    CountListDailyCounts = cl.CountListDailyCounts,
+                    AppUserDTO = new AppUserDTO
+                    {
+                        Id = cl.AppUser.Id,
+                        UserName = cl.AppUser.UserName,
+                        Role = cl.AppUser.Role
+                    }
+                });
         }
 
         public async Task AddDailyCount(int listId, int countId)

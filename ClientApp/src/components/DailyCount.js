@@ -49,8 +49,8 @@ function DailyCount() {
       </div>
       <SearchForm
         setLoading={()=> setLoading(!loading)}
-        fetchData={(url)=> fetchData(url)} 
-        setListId={(id)=> setListId(id)}
+        fetchData={url => fetchData(url)} 
+        setListId={id => setListId(id)}
       />
       <table className='table table-striped' aria-labelledby='covidTable'>
         <thead>
@@ -73,12 +73,16 @@ function DailyCount() {
               <td>{dailyCount.cases}</td>
               <td>{dailyCount.deaths}</td>
               <td>
-                <Button onClick={()=> handleClick('Add', dailyCount.id)}>
+                <Button
+                  onClick={()=> handleClick('Add', dailyCount.id)}
+                >
                   Save
                 </Button>
               </td>
               <td>
-                <Button onClick={()=> handleClick('Remove', dailyCount.id)}>
+                <Button
+                  onClick={()=> handleClick('Remove', dailyCount.id)}
+                >
                   Remove
                 </Button>
               </td>

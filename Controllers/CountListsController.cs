@@ -27,7 +27,7 @@ namespace Covid.Controllers
 
         // GET: api/CountLists
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CountList>>> GetCountList()
+        public async Task<ActionResult<IEnumerable<CountListDTO>>> GetCountList()
         {
             var countLists = await _countListRepository.GetCountLists().ToListAsync();
 
@@ -36,7 +36,7 @@ namespace Covid.Controllers
 
         // GET: api/CountLists/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CountList>> GetCountList(int id)
+        public async Task<ActionResult<CountListDTO>> GetCountList(int id)
         {
             var countList = await _countListRepository.GetCountLists().SingleAsync(cl => cl.Id == id);
 
@@ -126,8 +126,8 @@ namespace Covid.Controllers
             return countList;
         }
 
-        private ActionResult<IEnumerable<CountList>> ApiResponse(string method,
-            IEnumerable<CountList> countLists)
+        private ActionResult<IEnumerable<CountListDTO>> ApiResponse(string method,
+            IEnumerable<CountListDTO> countLists)
         {
             return Ok(new
             {
