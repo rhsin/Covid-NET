@@ -8,8 +8,7 @@ function CountList() {
   const [countLists, setCountLists] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const dailyCountList = countLists && 
-    countLists.map(countList => countList.countListDailyCounts);
+  const dailyCountList = countLists.map(countList => countList.countListDailyCounts);
 
   useEffect(()=> {
     fetchData();
@@ -65,7 +64,7 @@ function CountList() {
             </tr>
           </thead>
           <tbody>
-            {dailyCounts && dailyCounts.map(item =>
+            {dailyCounts.map(item =>
               <tr key={item.dailyCount.id}>
                 <td>{item.dailyCount.date}</td>
                 <td>{item.dailyCount.county}</td>

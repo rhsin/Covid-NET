@@ -3,7 +3,7 @@ import { urlQuery, monthList } from'./AppConstants';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function SearchForm(props) {
-  const { setLoading, fetchData } = props;
+  const { setLoading, fetchData, setListId } = props;
 
   const [county, setCounty] = useState('');
   const [state, setState] = useState('');
@@ -19,32 +19,32 @@ function SearchForm(props) {
   return (
     <Form className='form-search'>
       <FormGroup>
-        <Label for="inputCounty">County</Label>
+        <Label for='inputCounty'>County</Label>
         <Input
-          type="text" 
-          name="county"
+          type='text' 
+          name='county'
           onChange={e => setCounty(e.target.value)} 
-          id= "inputCounty" 
-          placeholder="Enter County" 
+          id= 'inputCounty' 
+          placeholder='Enter County' 
         />
       </FormGroup>
       <FormGroup>
-        <Label for="inputState">State</Label>
+        <Label for='inputState'>State</Label>
         <Input 
-          type="text" 
-          name="state" 
+          type='text' 
+          name='state' 
           onChange={e => setState(e.target.value)} 
-          id="inputState" 
-          placeholder="Enter State" 
+          id='inputState' 
+          placeholder='Enter State' 
         />
       </FormGroup>
       <FormGroup>
-        <Label for="selectMonth">Month</Label>
+        <Label for='selectMonth'>Month</Label>
         <Input
-          type="select"
-          name="month"
+          type='select'
+          name='month'
           onChange={e => setMonth(parseInt(e.target.value))} 
-          id="selectMonth"
+          id='selectMonth'
         >
           {monthList.map((month, index) => 
             <option value={index + 1} key={index}>
@@ -54,20 +54,33 @@ function SearchForm(props) {
         </Input>
       </FormGroup>
       <FormGroup>
-        <Label for="selectOrder">Order</Label>
+        <Label for='selectOrder'>Order</Label>
         <Input 
-          type="select"
-          name="order" 
+          type='select'
+          name='order' 
           onChange={e => setOrder(e.target.value)} 
-          id="selectOrder"
+          id='selectOrder'
         >
           <option value=''>Ascending</option>
           <option value='desc'>Descending</option>
         </Input>
       </FormGroup>
-      <Button onClick={e => handleSubmit(e)}>
+      <Button onClick={e => handleSubmit(e)} id='submit'>
         Submit
       </Button>
+      <FormGroup>
+        <Label for='selectList'>Select List</Label>
+        <Input 
+          type='select'
+          name='list' 
+          onChange={e => setListId(e.target.value)} 
+          id='selectList'
+        >
+          <option value={5}>5</option>
+          <option value={6}>6</option>
+          <option value={7}>7</option>
+        </Input>
+      </FormGroup>
     </Form>
   );
 }

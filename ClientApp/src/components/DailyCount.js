@@ -8,6 +8,7 @@ import { Button } from 'reactstrap';
 function DailyCount() {
   const [dailyCounts, setDailyCounts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [listId, setListId] = useState(5);
 
   useEffect(()=> {
     fetchData(url);
@@ -30,7 +31,7 @@ function DailyCount() {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.post(
-        listUrl + `DailyCount/${action}/5/${id}`, {
+        listUrl + `DailyCount/${action}/${listId}/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       console.log(response.data);
@@ -49,6 +50,7 @@ function DailyCount() {
       <SearchForm
         setLoading={()=> setLoading(!loading)}
         fetchData={(url)=> fetchData(url)} 
+        setListId={(id)=> setListId(id)}
       />
       <table className='table table-striped' aria-labelledby='covidTable'>
         <thead>
