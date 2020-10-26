@@ -1,6 +1,5 @@
 ﻿using Covid.Data;
 using Covid.DTO;
-using Covid.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -50,10 +49,16 @@ namespace Covid.Repositories
         {
             var parameters = new {  };
 
-            string sql = @"SELECT *
-                           FROM AspNetUsers
-                           INNER JOIN CountList 
-                           ON AspNetUsers.Id = CountList.AppUserId";
+            string sql = @"SELECT u.AccountId, u.Name, u.County, u.Role, l.Id AS ListId,
+                           c.Id AS CountId, c.Date, c.County, c.Cases
+                           FROM AspNetUsers AS u
+                           INNER JOIN CountList AS l
+                           ON u.Id = l.AppUserId
+                           INNER JOIN CountListDailyCount AS lc
+                           ON l.Id = lc.CountListId
+                           INNER JOIN DailyCount AS c
+                           ON lc.DailyCountId = c.Id
+                           ORDER BY u.AccountId";
 
             return await this.ExecuteQuery(sql, parameters);
         }

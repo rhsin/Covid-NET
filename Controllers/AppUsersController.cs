@@ -1,10 +1,9 @@
 ﻿using Covid.Data;
-using Covid.Models;
+using Covid.DTO;
 using Covid.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Covid.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

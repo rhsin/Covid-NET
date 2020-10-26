@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import authService from './api-authorization/AuthorizeService'
+import { userUrl } from'./AppConstants';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 function ListForm({ setListId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(()=> {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const token = await authService.getAccessToken();
+      const response = await axios.get(userUrl + 2, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      setUser(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Form className='form-search'>
       <FormGroup>
@@ -12,11 +33,11 @@ function ListForm({ setListId }) {
           onChange={e => setListId(e.target.value)} 
           id='selectList'
         >
-          <option value={5}>5</option>
-          <option value={6}>6</option>
-          <option value={7}>7</option>
-          <option value={8}>8</option>
-          <option value={9}>9</option>
+          {user && user.countLists.map(list => 
+            <option value={list.id} key={list.id}>
+              {list.id}
+            </option>
+          )}
         </Input>
       </FormGroup>
     </Form>

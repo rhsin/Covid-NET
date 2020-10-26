@@ -7,11 +7,10 @@ function SearchForm(props) {
 
   const [county, setCounty] = useState('');
   const [state, setState] = useState('');
-  const [month, setMonth] = useState(null);
+  const [month, setMonth] = useState(1);
   const [order, setOrder] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleClick = () => {
     setLoading();
     fetchData(urlQuery(county, state, month, order));
   };
@@ -65,7 +64,7 @@ function SearchForm(props) {
           <option value='desc'>Descending</option>
         </Input>
       </FormGroup>
-      <Button onClick={e => handleSubmit(e)} id='submit'>
+      <Button onClick={()=> handleClick()} id='submit'>
         Submit
       </Button>
       <FormGroup>
