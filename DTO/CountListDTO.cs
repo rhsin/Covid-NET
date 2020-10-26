@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Covid.Models;
+using System;
 using System.Collections.Generic;
 
-namespace Covid.Models
+namespace Covid.DTO
 {
     public class CountListDTO
     {

@@ -26,6 +26,5 @@ namespace Covid.Data
         public DbSet<CountList> CountList { get; set; }
         public DbSet<DailyCount> DailyCount { get; set; }
         public DbSet<CountListDailyCount> CountListDailyCount { get; set; }
-        public DbSet<Covid.Models.AppUserDTO> AppUserDTO { get; set; }
     }
 }

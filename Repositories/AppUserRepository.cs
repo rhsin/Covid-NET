@@ -1,5 +1,7 @@
 ﻿using Covid.Data;
+using Covid.DTO;
 using Covid.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -22,10 +24,14 @@ namespace Covid.Repositories
         public IQueryable<AppUserDTO> GetAppUsers()
         {
             return _context.AppUser
+                .Include(au => au.CountLists)
                 .Select(au => new AppUserDTO
                 {
                     Id = au.Id,
+                    AccountId = au.AccountId,
                     UserName = au.UserName,
+                    Name = au.Name,
+                    County = au.County,
                     Role = au.Role
                 });
         }

@@ -1,4 +1,5 @@
 ﻿using Covid.Data;
+using Covid.DTO;
 using Covid.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -42,7 +43,10 @@ namespace Covid.Repositories
                     AppUserDTO = new AppUserDTO
                     {
                         Id = cl.AppUser.Id,
+                        AccountId = cl.AppUser.AccountId,
                         UserName = cl.AppUser.UserName,
+                        Name = cl.AppUser.Name,
+                        County = cl.AppUser.County,
                         Role = cl.AppUser.Role
                     }
                 });

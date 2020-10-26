@@ -1,4 +1,5 @@
 ﻿using Covid.Data;
+using Covid.DTO;
 using Covid.Models;
 using Covid.Repositories;
 using Microsoft.AspNetCore.Authorization;

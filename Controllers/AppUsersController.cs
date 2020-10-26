@@ -4,6 +4,7 @@ using Covid.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Covid.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,10 +34,10 @@ namespace Covid.Controllers
 
         // GET: api/AppUsers/ec676d34-b2e3-4187-8736-312e57efa1ed
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUserDTO>> GetAppUser(string id)
+        public async Task<ActionResult<AppUserDTO>> GetAppUser(int id)
         {
             var appUser = await _appUserRepository.GetAppUsers()
-                .SingleAsync(au => au.Id == id);
+                .SingleAsync(au => au.AccountId == id);
 
             if (appUser == null)
             {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import authService from './api-authorization/AuthorizeService'
+import ListForm from './ListForm';
 import { listUrl } from'./AppConstants';
 import { Button } from 'reactstrap';
 
 function CountList() {
   const [countLists, setCountLists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [listId, setListId] = useState(5);
 
   const dailyCountList = countLists.map(countList => countList.countListDailyCounts);
 
@@ -27,7 +29,7 @@ function CountList() {
     setLoading(false);
   };
 
-  const handleClick = async (action, listId, id) => {
+  const handleClick = async (action, id) => {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.post(
@@ -47,6 +49,7 @@ function CountList() {
         <h1 id='covidTable'>COVID DailyCount Lists</h1>
         <p>This component demonstrates fetching data from the server.</p>
       </div>
+      <ListForm setListId={id => setListId(id)} />
       {dailyCountList.map((dailyCounts, index) => 
         <table 
           key={index} 
@@ -73,7 +76,7 @@ function CountList() {
                 <td>{item.dailyCount.deaths}</td>
                 <td>
                   <Button
-                    onClick={()=> handleClick('Remove', 5, item.dailyCount.id)}
+                    onClick={()=> handleClick('Remove', item.dailyCount.id)}
                   >
                     Remove
                   </Button>
