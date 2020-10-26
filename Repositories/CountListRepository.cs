@@ -79,7 +79,7 @@ namespace Covid.Repositories
             }
         }
 
-        private async Task<IEnumerable<CountList>> ExecuteQuery(string sql, object parameters)
+        private async Task<IEnumerable<CountList>> ExecuteListQuery(string sql, object parameters)
         {
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {

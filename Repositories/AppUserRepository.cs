@@ -16,7 +16,7 @@ namespace Covid.Repositories
     {
         public IQueryable<AppUserDTO> GetAppUsers();
         public Task<IEnumerable<AppUserDTO>> GetAppUserRole(string role);
-        public Task<string> GetAppUserDetails();
+        public Task<object> GetAppUserDetails();
     }
 
     public class AppUserRepository : IAppUserRepository
@@ -46,7 +46,7 @@ namespace Covid.Repositories
                 });
         }
 
-        public async Task<string> GetAppUserDetails()
+        public async Task<object> GetAppUserDetails()
         {
             var parameters = new {  };
 
@@ -66,20 +66,20 @@ namespace Covid.Repositories
                            FROM AspNetUsers
                            WHERE Role = @Role";
 
-            return await this.QueryReults(sql, parameters);
+            return await this.ExecuteUserQuery(sql, parameters);
         }
 
-        private async Task<string> ExecuteQuery(string sql, object parameters)
+        private async Task<object> ExecuteQuery(string sql, object parameters)
         {
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {
-                var result = await connection.QueryFirstAsync<string>(sql, parameters);
+                var result = await connection.QueryAsync<object>(sql, parameters);
 
                 return result;
             }
         }
 
-        private async Task<IEnumerable<AppUserDTO>> QueryReults(string sql, object parameters)
+        private async Task<IEnumerable<AppUserDTO>> ExecuteUserQuery(string sql, object parameters)
         {
             using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
             {

@@ -49,7 +49,7 @@ namespace Covid.Controllers
 
         // GET: api/AppUsers/Details
         [HttpGet("Details")]
-        public async Task<ActionResult<string>> GetAppUserDetails()
+        public async Task<ActionResult<object>> GetAppUserDetails()
         {
             return Ok(await _appUserRepository.GetAppUserDetails());
         }
