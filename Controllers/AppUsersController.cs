@@ -32,7 +32,7 @@ namespace Covid.Controllers
             return await _appUserRepository.GetAppUsers().ToListAsync();
         }
 
-        // GET: api/AppUsers/ec676d34-b2e3-4187-8736-312e57efa1ed
+        // GET: api/AppUsers/1
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUserDTO>> GetAppUser(int id)
         {
@@ -45,6 +45,20 @@ namespace Covid.Controllers
             }
 
             return appUser;
+        }
+
+        // GET: api/AppUsers/Details
+        [HttpGet("Details")]
+        public async Task<ActionResult<string>> GetAppUserDetails()
+        {
+            return Ok(await _appUserRepository.GetAppUserDetails());
+        }
+
+        // GET: api/AppUsers/Role/User
+        [HttpGet("Role/{role}")]
+        public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAppUserRole(string role)
+        {
+            return Ok(await _appUserRepository.GetAppUserRole(role));
         }
     }
 }
