@@ -38,7 +38,8 @@ namespace Covid.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountListDTO>> GetCountList(int id)
         {
-            var countList = await _countListRepository.GetCountLists().SingleAsync(cl => cl.Id == id);
+            var countList = await _countListRepository.GetCountLists()
+                .SingleAsync(cl => cl.Id == id);
 
             if (countList == null)
             {

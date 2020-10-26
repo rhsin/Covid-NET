@@ -49,7 +49,8 @@ namespace Covid.Controllers
 
         // GET: api/DailyCounts/Range/Cases
         [HttpGet("Range/{column?}")]
-        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases", int min = 0, int max = 200000)
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases",
+            int min = 0, int max = 200000)
         {
             var dailyCounts = await _dailyCountRepository.Range(column, min, max);
 
