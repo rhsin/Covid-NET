@@ -1,61 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import authService from './api-authorization/AuthorizeService'
+import React, { useContext, useState } from 'react';
 import ListForm from './ListForm';
-import { listUrl, userUrl } from'./AppConstants';
+import { Context } from './Layout';
 import { Button } from 'reactstrap';
 
 function CountList() {
-  const [countLists, setCountLists] = useState([]);
-  const [users, setUsers] = useState([]);
+  const { countLists, users, loading, handleClick } = useContext(Context);
+
   const [user, setUser] = useState(null);
   const [listId, setListId] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const dailyCountList = countLists.map(countList => countList.countListDailyCounts);
-
-  useEffect(()=> {
-    fetchLists();
-    fetchUsers();
-  }, []);
-
-  const fetchLists = async () => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.get(listUrl, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      setCountLists(response.data.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-    setLoading(false);
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.get(userUrl, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      setUsers(response.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const handleClick = async (action, id) => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.post(
-        listUrl + `DailyCount/${action}/${listId}/${id}`, {}, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      console.log(response.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   const selectUser = (id) => {
     const user = users.find(user => user.accountId == id);
@@ -101,7 +55,7 @@ function CountList() {
                 <td>{item.dailyCount.deaths}</td>
                 <td>
                   <Button
-                    onClick={()=> handleClick('Remove', item.dailyCount.id)}
+                    onClick={()=> handleClick('Remove', listId, item.dailyCount.id)}
                   >
                     Remove
                   </Button>

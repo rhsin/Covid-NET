@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { Context } from './Layout';
 import { urlQuery, monthList } from'./AppConstants';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-function SearchForm(props) {
-  const { setLoading, fetchCounts, setListId } = props;
+function SearchForm({ setListId }) {
+  const { fetchCounts } = useContext(Context);
 
   const [county, setCounty] = useState('');
   const [state, setState] = useState('');
@@ -11,7 +12,6 @@ function SearchForm(props) {
   const [order, setOrder] = useState('');
 
   const handleClick = () => {
-    setLoading();
     fetchCounts(urlQuery(county, state, month, order));
   };
 

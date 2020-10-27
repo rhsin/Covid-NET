@@ -1,44 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import authService from './api-authorization/AuthorizeService'
+import React, { useContext, useState } from 'react';
 import SearchForm from './SearchForm';
-import { url, listUrl } from'./AppConstants';
+import { Context } from './Layout';
 import { Button } from 'reactstrap';
 
 function DailyCount() {
-  const [dailyCounts, setDailyCounts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { dailyCounts, loading, handleClick } = useContext(Context);
+
   const [listId, setListId] = useState(5);
-
-  useEffect(()=> {
-    fetchCounts(url);
-  }, []);
-
-  const fetchCounts = async (url) => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.get(url, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      setDailyCounts(response.data.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-    setLoading(false);
-  };
-
-  const handleClick = async (action, id) => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.post(
-        listUrl + `DailyCount/${action}/${listId}/${id}`, {}, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      console.log(response.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   return (
     <>
@@ -47,11 +15,7 @@ function DailyCount() {
         <h1 id='covidTable'>COVID Daily Counts</h1>
         <p>This component demonstrates fetching data from the server.</p>
       </div>
-      <SearchForm
-        setLoading={()=> setLoading(!loading)}
-        fetchCounts={url => fetchCounts(url)} 
-        setListId={id => setListId(id)}
-      />
+      <SearchForm setListId={id => setListId(id)} />
       <table className='table table-striped' aria-labelledby='covidTable'>
         <thead>
           <tr>
@@ -64,7 +28,7 @@ function DailyCount() {
           </tr>
         </thead>
         <tbody>
-          {dailyCounts.map(dailyCount =>
+          {dailyCounts && dailyCounts.map(dailyCount =>
             <tr key={dailyCount.id}>
               <td>{dailyCount.date}</td>
               <td>{dailyCount.county}</td>
@@ -73,7 +37,7 @@ function DailyCount() {
               <td>{dailyCount.deaths}</td>
               <td>
                 <Button
-                  onClick={()=> handleClick('Add', dailyCount.id)}
+                  onClick={()=> handleClick('Add', listId, dailyCount.id)}
                 >
                   Save
                 </Button>
