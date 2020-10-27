@@ -1,30 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import authService from './api-authorization/AuthorizeService'
-import { userUrl } from'./AppConstants';
+import React from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 
-function ListForm({ setListId }) {
-  const [user, setUser] = useState(null);
-
-  useEffect(()=> {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.get(userUrl + 2, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      setUser(response.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
+function ListForm(props) {
+  const { users, user, selectUser, setListId } = props;
+  
   return (
     <Form className='form-search'>
+      <FormGroup>
+        <Label for='selectUser'>Select User</Label>
+        <Input 
+          type='select'
+          name='user' 
+          onChange={e => selectUser(e.target.value)} 
+          id='selectUser'
+        >
+          {users.map(user => 
+            <option value={user.accountId} key={user.accountId}>
+              {user.name}
+            </option>
+          )}
+        </Input>
+      </FormGroup>  
       <FormGroup>
         <Label for='selectList'>Select List</Label>
         <Input 

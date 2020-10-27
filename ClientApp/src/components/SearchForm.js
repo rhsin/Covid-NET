@@ -3,7 +3,7 @@ import { urlQuery, monthList } from'./AppConstants';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function SearchForm(props) {
-  const { setLoading, fetchData, setListId } = props;
+  const { setLoading, fetchCounts, setListId } = props;
 
   const [county, setCounty] = useState('');
   const [state, setState] = useState('');
@@ -12,7 +12,7 @@ function SearchForm(props) {
 
   const handleClick = () => {
     setLoading();
-    fetchData(urlQuery(county, state, month, order));
+    fetchCounts(urlQuery(county, state, month, order));
   };
 
   return (

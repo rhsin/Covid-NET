@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
 import DailyCount from './components/DailyCount';
 import CountList from './components/CountList';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -17,9 +15,7 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
-        <AuthorizeRoute path='/fetch-data' component={FetchData} />
-        <AuthorizeRoute path='/daily-count'>
+        <AuthorizeRoute exact path='/'>
           <DailyCount />
         </AuthorizeRoute>
         <AuthorizeRoute path='/count-list'>
