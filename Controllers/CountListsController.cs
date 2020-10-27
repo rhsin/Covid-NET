@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Covid.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CountListsController : ControllerBase
@@ -51,6 +50,7 @@ namespace Covid.Controllers
         }
 
         // POST: api/CountLists/DailyCount/Add/5/1
+        [Authorize]
         [HttpPost("DailyCount/Add/{listId}/{countId}")]
         public async Task<ActionResult> AddDailyCount(int listId, int countId)
         {
@@ -60,6 +60,7 @@ namespace Covid.Controllers
         }
 
         // POST: api/CountLists/DailyCount/Remove/5/1
+        [Authorize]
         [HttpPost("DailyCount/Remove/{listId}/{countId}")]
         public async Task<ActionResult> RemoveDailyCount(int listId, int countId)
         {
@@ -71,6 +72,7 @@ namespace Covid.Controllers
         // PUT: api/CountLists/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCountList(int id, CountList countList)
         {
@@ -103,6 +105,7 @@ namespace Covid.Controllers
         // POST: api/CountLists
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CountList>> PostCountList(CountList countList)
         {
@@ -113,6 +116,7 @@ namespace Covid.Controllers
         }
 
         // DELETE: api/CountLists/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<CountList>> DeleteCountList(int id)
         {

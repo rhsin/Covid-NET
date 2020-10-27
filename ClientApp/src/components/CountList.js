@@ -48,7 +48,7 @@ function CountList() {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.post(
-        listUrl + `DailyCount/${action}/${listId}/${id}`, {
+        listUrl + `DailyCount/${action}/${listId}/${id}`, {}, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       console.log(response.data);

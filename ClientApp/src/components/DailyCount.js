@@ -31,7 +31,7 @@ function DailyCount() {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.post(
-        listUrl + `DailyCount/${action}/${listId}/${id}`, {
+        listUrl + `DailyCount/${action}/${listId}/${id}`, {}, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
       console.log(response.data);
@@ -61,7 +61,6 @@ function DailyCount() {
             <th>Cases</th>
             <th>Deaths</th>
             <th>Save</th>
-            <th>Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -77,13 +76,6 @@ function DailyCount() {
                   onClick={()=> handleClick('Add', dailyCount.id)}
                 >
                   Save
-                </Button>
-              </td>
-              <td>
-                <Button
-                  onClick={()=> handleClick('Remove', dailyCount.id)}
-                >
-                  Remove
                 </Button>
               </td>
             </tr>

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace Covid.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AppUsersController : ControllerBase
@@ -32,6 +31,7 @@ namespace Covid.Controllers
         }
 
         // GET: api/AppUsers/1
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUserDTO>> GetAppUser(int id)
         {

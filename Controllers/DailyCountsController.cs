@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Covid.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DailyCountsController : ControllerBase
@@ -90,6 +89,7 @@ namespace Covid.Controllers
         }
 
         // POST: api/DailyCounts/Import
+        [Authorize]
         [HttpPost("Import")]
         public async Task<ActionResult<string>> ImportDailyCounts()
         {
@@ -113,6 +113,7 @@ namespace Covid.Controllers
         // PUT: api/DailyCounts/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDailyCount(int id, DailyCount dailyCount)
         {
@@ -145,6 +146,7 @@ namespace Covid.Controllers
         // POST: api/DailyCounts
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<DailyCount>> PostDailyCount(DailyCount dailyCount)
         {
@@ -155,6 +157,7 @@ namespace Covid.Controllers
         }
 
         // DELETE: api/DailyCounts/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<DailyCount>> DeleteDailyCount(int id)
         {
