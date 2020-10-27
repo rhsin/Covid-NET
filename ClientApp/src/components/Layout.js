@@ -14,44 +14,18 @@ function Layout({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(()=> {
-    fetchCounts(url);
-    fetchLists();
-    fetchUsers();
+    fetchData(url, counts => setDailyCounts(counts));
+    fetchData(listUrl, lists => setCountLists(lists));
+    fetchData(userUrl, users => setUsers(users));
   }, [loading]);
 
-  const fetchCounts = async (url) => {
+  const fetchData = async (url, setState) => {
     try {
       const token = await authService.getAccessToken();
       const response = await axios.get(url, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
-      setDailyCounts(response.data.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-    setLoading(false);
-  };
-
-  const fetchLists = async () => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.get(listUrl, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      setCountLists(response.data.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-    setLoading(false);
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const token = await authService.getAccessToken();
-      const response = await axios.get(userUrl, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      setUsers(response.data);
+      setState(response.data.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -77,8 +51,7 @@ function Layout({ children }) {
     countLists: countLists,
     users: users,
     loading: loading,
-    setLoading: () => setLoading(!loading),
-    fetchCounts: url => fetchCounts(url),
+    fetchCounts: (url) => fetchData(url, counts => setDailyCounts(counts)),
     handleClick: (url, action, listId, id) => handleClick(url, action, listId, id) 
   };
 

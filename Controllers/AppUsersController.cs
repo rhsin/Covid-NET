@@ -1,11 +1,11 @@
-﻿using Covid.Data;
-using Covid.DTO;
+﻿using Covid.DTO;
 using Covid.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Covid.Controllers
@@ -14,12 +14,10 @@ namespace Covid.Controllers
     [ApiController]
     public class AppUsersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IAppUserRepository _appUserRepository;
 
-        public AppUsersController(ApplicationDbContext context, IAppUserRepository appUserRepository)
+        public AppUsersController(IAppUserRepository appUserRepository)
         {
-            _context = context;
             _appUserRepository = appUserRepository;
         }
 
@@ -27,7 +25,9 @@ namespace Covid.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAppUser()
         {
-            return await _appUserRepository.GetAppUsers().ToListAsync();
+            var appUsers = await _appUserRepository.GetAppUsers().ToListAsync();
+
+            return this.ApiResponse("All AppUsers", appUsers);
         }
 
         // GET: api/AppUsers/1
@@ -43,21 +43,37 @@ namespace Covid.Controllers
                 return NotFound();
             }
 
-            return appUser;
+            return Ok(new { Method = "Find By Id", Data = appUser });
         }
 
         // GET: api/AppUsers/Details
         [HttpGet("Details")]
         public async Task<ActionResult<object>> GetAppUserDetails()
         {
-            return Ok(await _appUserRepository.GetAppUserDetails());
+            var data = await _appUserRepository.GetAppUserDetails();
+
+            return Ok(new { Method = "Query Result", Data = data });
         }
 
         // GET: api/AppUsers/Role/User
+        [Authorize]
         [HttpGet("Role/{role}")]
         public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAppUserRole(string role)
         {
-            return Ok(await _appUserRepository.GetAppUserRole(role));
+            var appUsers = await _appUserRepository.GetAppUserRole(role);
+
+            return this.ApiResponse("Find By Role", appUsers);
+        }
+
+        private ActionResult<IEnumerable<AppUserDTO>> ApiResponse(string method,
+            IEnumerable<AppUserDTO> appUsers)
+        {
+            return Ok(new
+            {
+                Method = method,
+                Count = appUsers.Count(),
+                Data = appUsers
+            });
         }
     }
 }
