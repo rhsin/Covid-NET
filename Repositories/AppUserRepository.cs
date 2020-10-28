@@ -13,7 +13,7 @@ namespace Covid.Repositories
 {
     public interface IAppUserRepository
     {
-        public IQueryable<AppUserDTO> GetAppUsers();
+        public Task<IEnumerable<AppUserDTO>> GetAppUsers();
         public Task<IEnumerable<AppUserDTO>> GetAppUserRole(string role);
     }
 
@@ -28,9 +28,9 @@ namespace Covid.Repositories
             _config = config;
         }
 
-        public IQueryable<AppUserDTO> GetAppUsers()
+        public async Task<IEnumerable<AppUserDTO>> GetAppUsers()
         {
-            return _context.AppUser
+            return await _context.AppUser
                 .Include(au => au.CountLists)
                 .Select(au => new AppUserDTO
                 {
@@ -41,7 +41,8 @@ namespace Covid.Repositories
                     County = au.County,
                     Role = au.Role,
                     CountLists = au.CountLists
-                });
+                })
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<AppUserDTO>> GetAppUserRole(string role)

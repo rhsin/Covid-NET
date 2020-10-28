@@ -32,7 +32,7 @@ namespace Covid.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DailyCount>>> GetDailyCount()
         {
-            var dailyCounts = await _dailyCountRepository.GetDailyCounts().ToListAsync();
+            var dailyCounts = await _dailyCountRepository.GetDailyCounts();
 
             return this.ApiResponse("All DailyCounts", dailyCounts);
         }

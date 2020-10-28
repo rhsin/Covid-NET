@@ -29,7 +29,7 @@ namespace Covid.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CountListDTO>>> GetCountList()
         {
-            var countLists = await _countListRepository.GetCountLists().ToListAsync();
+            var countLists = await _countListRepository.GetCountLists();
 
             return this.ApiResponse("All CountLists", countLists);
         }
@@ -38,15 +38,16 @@ namespace Covid.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CountListDTO>> GetCountList(int id)
         {
-            var countList = await _countListRepository.GetCountLists()
-                .SingleAsync(cl => cl.Id == id);
+            var countLists = await _countListRepository.GetCountLists();
+                
+            var countList = countLists.First(cl => cl.Id == id);
 
             if (countList == null)
             {
                 return NotFound();
             }
 
-            return countList;
+            return Ok(new { Method = "Find By Id", Data = countList });
         }
 
         // POST: api/CountLists/DailyCount/Add/5/1

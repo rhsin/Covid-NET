@@ -2,6 +2,7 @@
 using Covid.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Covid.Repositories
 {
     public interface IDailyCountRepository
     {
-        public IQueryable<DailyCount> GetDailyCounts();
+        public Task<IEnumerable<DailyCount>> GetDailyCounts();
         public Task<IEnumerable<DailyCount>> Filter(string county, string state);
         public Task<IEnumerable<DailyCount>> Range(string column, int min, int max);
         public Task<IEnumerable<DailyCount>> DateRange(int month);
@@ -32,12 +33,12 @@ namespace Covid.Repositories
             _config = config;
         }
 
-        public IQueryable<DailyCount> GetDailyCounts()
+        public async Task<IEnumerable<DailyCount>> GetDailyCounts()
         {
             var dailyCounts = from dc in _context.DailyCount
                               select dc;
 
-            return dailyCounts.Take(100);
+            return await dailyCounts.Take(100).ToListAsync();
         }
 
         public async Task<IEnumerable<DailyCount>> Filter(string county, string state)

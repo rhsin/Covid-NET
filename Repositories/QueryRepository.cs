@@ -63,7 +63,7 @@ namespace Covid.Repositories
                                WHERE LOWER(County) LIKE LOWER(@County) 
                                AND LOWER(State) LIKE LOWER(@State)
                                AND MONTH(Date) = @Month)
-                               Average";
+                               DailyCountAverage";
 
             var value = await this.ExecuteQuery(sqlAvg, parameters);
             var data = await this.ExecuteQuery(sqlData, parameters);

@@ -2,7 +2,6 @@
 using Covid.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +24,7 @@ namespace Covid.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUserDTO>>> GetAppUser()
         {
-            var appUsers = await _appUserRepository.GetAppUsers().ToListAsync();
+            var appUsers = await _appUserRepository.GetAppUsers();
 
             return this.ApiResponse("All AppUsers", appUsers);
         }
@@ -35,8 +34,9 @@ namespace Covid.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUserDTO>> GetAppUser(int id)
         {
-            var appUser = await _appUserRepository.GetAppUsers()
-                .SingleAsync(au => au.AccountId == id);
+            var appUsers = await _appUserRepository.GetAppUsers();
+
+            var appUser = appUsers.First(au => au.AccountId == id);
 
             if (appUser == null)
             {

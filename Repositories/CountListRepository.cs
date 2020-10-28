@@ -14,7 +14,7 @@ namespace Covid.Repositories
 {
     public interface ICountListRepository
     {
-        public IQueryable<CountListDTO> GetCountLists();
+        public Task<IEnumerable<CountListDTO>> GetCountLists();
         public Task AddDailyCount(int listId, int countId);
         public Task RemoveDailyCount(int listId, int countId);
     }
@@ -30,9 +30,9 @@ namespace Covid.Repositories
             _config = config;
         }
 
-        public IQueryable<CountListDTO> GetCountLists()
+        public async Task<IEnumerable<CountListDTO>> GetCountLists()
         {
-            return _context.CountList
+            return await _context.CountList
                 .Include(cl => cl.CountListDailyCounts)
                 .ThenInclude(cd => cd.DailyCount)
                 .Include(cl => cl.AppUser)
@@ -49,7 +49,8 @@ namespace Covid.Repositories
                         County = cl.AppUser.County,
                         Role = cl.AppUser.Role
                     }
-                });
+                })
+                .ToListAsync();
         }
 
         public async Task AddDailyCount(int listId, int countId)
