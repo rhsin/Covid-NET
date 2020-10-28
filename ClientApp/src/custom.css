@@ -7,22 +7,37 @@ code {
   color: #E01A76;
 }
 
+table {
+  margin-top: 1rem;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
 
+.card {
+  margin: 1rem 0;
+  padding: .15rem 1rem;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  transition: 0.25s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.covidTable {
+  color: navy;
+}
+
 .form-search {
   margin: 1rem 0;
 }
 
-#covidTable {
-  color: navy;
-}
-
-#submit {
-  margin-bottom: 1rem;
-}
 
 
