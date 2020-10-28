@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import DailyCount from './components/DailyCount';
 import CountList from './components/CountList';
@@ -11,19 +11,21 @@ import './custom.css';
 
 function App() {
   return (
-    <Layout>
-      <Switch>
-        <AuthorizeRoute exact path='/'>
-          <DailyCount />
-        </AuthorizeRoute>
-        <AuthorizeRoute path='/count-list'>
-          <CountList />
-        </AuthorizeRoute>
-        <Route path={ApplicationPaths.ApiAuthorizationPrefix}>
-          <ApiAuthorizationRoutes />
-        </Route>
-      </Switch>
-    </Layout>
+    <BrowserRouter>
+      <Layout>
+        <Switch>
+          <AuthorizeRoute exact path='/'>
+            <DailyCount />
+          </AuthorizeRoute>
+          <AuthorizeRoute path='/count-list'>
+            <CountList />
+          </AuthorizeRoute>
+          <Route path={ApplicationPaths.ApiAuthorizationPrefix}>
+            <ApiAuthorizationRoutes />
+          </Route>
+        </Switch>
+      </Layout>
+    </BrowserRouter>
   );
 }
 

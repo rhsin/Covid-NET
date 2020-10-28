@@ -15,12 +15,19 @@ function Layout({ children }) {
   const [render, setRender] = useState(false);
 
   useEffect(()=> {
+    const cancelToken = axios.CancelToken;
+    const source = cancelToken.source();
+
     fetchData(url, counts => setDailyCounts(counts));
     fetchData(listUrl, lists => setCountLists(lists));
     fetchData(userUrl, users => setUsers(users));
+    
+    return () => {
+      source.cancel("Request Cancelled");
+    }
   }, [render]);
 
-    const store = {
+  const store = {
     dailyCounts: dailyCounts,
     countLists: countLists,
     users: users,
@@ -36,11 +43,13 @@ function Layout({ children }) {
       const token = await authService.getAccessToken();
       const response = await axios.get(url, {
         headers: { 'Authorization': `Bearer ${token}` }
-      })
+      });
       setState(response.data.data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error.message);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };
@@ -52,11 +61,13 @@ function Layout({ children }) {
       const response = await axios.post(
         listUrl + `DailyCount/${action}/${listId}/${id}`, {}, {
         headers: { 'Authorization': `Bearer ${token}` }
-      })
+      });
       console.log(response.data);
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error.message);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };

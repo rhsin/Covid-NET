@@ -14,17 +14,29 @@ test('renders without crashing', async () => {
   await new Promise(resolve => setTimeout(resolve, 1000));
 });
 
+test('renders DailyCount link', () => {
+  const { getByText } = render(<App />);
+  const linkElement = getByText(/Daily Count/);
+  expect(linkElement).toBeInTheDocument();
+});
+
+test('renders CountList link', () => {
+  const { getByText } = render(<App />);
+  const linkElement = getByText(/Count List/);
+  expect(linkElement).toBeInTheDocument();
+});
+
 // test('renders DailyCount title', () => {
 //   const { getByText } = render(<DailyCount />);
 //   const textElement = getByText(/COVID Daily Counts/);
 //   expect(textElement).toBeInTheDocument();
 // });
 
-test('renders CountList title', () => {
-  const { getByText } = render(<App />);
-  const textElement = getByText(/COVID DailyCount Lists/);
-  expect(textElement).toBeInTheDocument();
-});
+// test('renders CountList title', () => {
+//   const { getByText } = render(<App />);
+//   const textElement = getByText(/COVID DailyCount Lists/);
+//   expect(textElement).toBeInTheDocument();
+// });
 
 // test('renders search county input', () => {
 //   const { getByText } = render(<App />);
