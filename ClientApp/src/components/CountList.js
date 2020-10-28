@@ -4,7 +4,7 @@ import { Context } from './Layout';
 import { Button } from 'reactstrap';
 
 function CountList() {
-  const { countLists, users, loading, handleClick } = useContext(Context);
+  const { countLists, users, loading, handleCount, setRender } = useContext(Context);
 
   const [user, setUser] = useState(null);
   const [listId, setListId] = useState(null);
@@ -12,8 +12,14 @@ function CountList() {
   const dailyCountList = countLists.map(countList => countList.countListDailyCounts);
 
   const selectUser = (id) => {
+    // eslint-disable-next-line
     const user = users.find(user => user.accountId == id);
     setUser(user);
+  };
+
+  const handleClick = (id) => {
+    handleCount('Remove', listId, id);
+    setRender();
   };
 
   return (
@@ -55,7 +61,7 @@ function CountList() {
                 <td>{item.dailyCount.deaths}</td>
                 <td>
                   <Button
-                    onClick={()=> handleClick('Remove', listId, item.dailyCount.id)}
+                    onClick={()=> handleClick(item.dailyCount.id)}
                   >
                     Remove
                   </Button>

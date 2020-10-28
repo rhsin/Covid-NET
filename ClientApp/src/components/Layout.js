@@ -12,15 +12,27 @@ function Layout({ children }) {
   const [countLists, setCountLists] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [render, setRender] = useState(false);
 
   useEffect(()=> {
     fetchData(url, counts => setDailyCounts(counts));
     fetchData(listUrl, lists => setCountLists(lists));
     fetchData(userUrl, users => setUsers(users));
-  }, [loading]);
+  }, [render]);
+
+    const store = {
+    dailyCounts: dailyCounts,
+    countLists: countLists,
+    users: users,
+    loading: loading,
+    fetchCounts: (url) => fetchData(url, counts => setDailyCounts(counts)),
+    handleCount: (url, action, listId, id) => handleCount(url, action, listId, id),
+    setRender: () => setRender(!render) 
+  };
 
   const fetchData = async (url, setState) => {
     try {
+      setLoading(true);
       const token = await authService.getAccessToken();
       const response = await axios.get(url, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -28,12 +40,14 @@ function Layout({ children }) {
       setState(response.data.data);
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const handleClick = async (action, listId, id) => {
+  const handleCount = async (action, listId, id) => {
     try {
+      setLoading(true);
       const token = await authService.getAccessToken();
       const response = await axios.post(
         listUrl + `DailyCount/${action}/${listId}/${id}`, {}, {
@@ -42,17 +56,9 @@ function Layout({ children }) {
       console.log(response.data);
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(!loading);
-  };
-
-  const store = {
-    dailyCounts: dailyCounts,
-    countLists: countLists,
-    users: users,
-    loading: loading,
-    fetchCounts: (url) => fetchData(url, counts => setDailyCounts(counts)),
-    handleClick: (url, action, listId, id) => handleClick(url, action, listId, id) 
   };
 
   return (

@@ -4,9 +4,14 @@ import { Context } from './Layout';
 import { Button } from 'reactstrap';
 
 function DailyCount() {
-  const { dailyCounts, loading, handleClick } = useContext(Context);
+  const { dailyCounts, loading, handleCount, setRender } = useContext(Context);
 
   const [listId, setListId] = useState(5);
+
+  const handleClick = (id) => {
+    handleCount('Add', listId, id);
+    setRender();
+  };
 
   return (
     <>
@@ -37,7 +42,7 @@ function DailyCount() {
               <td>{dailyCount.deaths}</td>
               <td>
                 <Button
-                  onClick={()=> handleClick('Add', listId, dailyCount.id)}
+                  onClick={()=> handleClick(dailyCount.id)}
                 >
                   Save
                 </Button>
