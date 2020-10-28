@@ -46,15 +46,6 @@ namespace Covid.Controllers
             return Ok(new { Method = "Find By Id", Data = appUser });
         }
 
-        // GET: api/AppUsers/Details
-        [HttpGet("Details")]
-        public async Task<ActionResult<object>> GetAppUserDetails()
-        {
-            var data = await _appUserRepository.GetAppUserDetails();
-
-            return Ok(new { Method = "Query Result", Data = data });
-        }
-
         // GET: api/AppUsers/Role/User
         [Authorize]
         [HttpGet("Role/{role}")]

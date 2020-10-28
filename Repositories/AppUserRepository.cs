@@ -15,7 +15,6 @@ namespace Covid.Repositories
     {
         public IQueryable<AppUserDTO> GetAppUsers();
         public Task<IEnumerable<AppUserDTO>> GetAppUserRole(string role);
-        public Task<object> GetAppUserDetails();
     }
 
     public class AppUserRepository : IAppUserRepository
@@ -45,24 +44,6 @@ namespace Covid.Repositories
                 });
         }
 
-        public async Task<object> GetAppUserDetails()
-        {
-            var parameters = new {  };
-
-            string sql = @"SELECT u.AccountId, u.Name, u.County, u.Role, l.Id AS ListId,
-                           c.Id AS CountId, c.Date, c.County, c.Cases
-                           FROM AspNetUsers AS u
-                           INNER JOIN CountList AS l
-                           ON u.Id = l.AppUserId
-                           INNER JOIN CountListDailyCount AS lc
-                           ON l.Id = lc.CountListId
-                           INNER JOIN DailyCount AS c
-                           ON lc.DailyCountId = c.Id
-                           ORDER BY u.AccountId";
-
-            return await this.ExecuteQuery(sql, parameters);
-        }
-
         public async Task<IEnumerable<AppUserDTO>> GetAppUserRole(string role)
         {
             var parameters = new { Role = role };
@@ -72,16 +53,6 @@ namespace Covid.Repositories
                            WHERE Role = @Role";
 
             return await this.ExecuteUserQuery(sql, parameters);
-        }
-
-        private async Task<object> ExecuteQuery(string sql, object parameters)
-        {
-            using (var connection = new SqlConnection(_config.GetConnectionString("DefaultConnection")))
-            {
-                var result = await connection.QueryAsync<object>(sql, parameters);
-
-                return result;
-            }
         }
 
         private async Task<IEnumerable<AppUserDTO>> ExecuteUserQuery(string sql, object parameters)

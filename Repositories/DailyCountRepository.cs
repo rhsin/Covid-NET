@@ -80,7 +80,8 @@ namespace Covid.Repositories
         public async Task<IEnumerable<DailyCount>> Query(string county, string state, string order,
             int month, string column, int limit)
         {
-            var parameters = new {
+            var parameters = new 
+            {
                 County = $"%{county}%",
                 State = $"%{state}%",
                 Month = month,
