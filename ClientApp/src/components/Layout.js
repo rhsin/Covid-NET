@@ -5,7 +5,14 @@ import { url, listUrl, userUrl } from'./AppConstants';
 import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';
 
-export const Context = createContext();
+const defaultValue = {
+  dailyCounts: [],
+  countLists: [],
+  users: [],
+  loading: true
+};
+
+export const Context = createContext(defaultValue);
 
 function Layout({ children }) {
   const [dailyCounts, setDailyCounts] = useState([]);
