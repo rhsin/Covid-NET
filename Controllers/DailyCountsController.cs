@@ -1,5 +1,6 @@
 ﻿using Covid.Models;
 using Covid.Repositories;
+using Covid.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,10 +16,13 @@ namespace Covid.Controllers
     public class DailyCountsController : ControllerBase
     {
         private readonly IDailyCountRepository _dailyCountRepository;
+        private readonly IInputValidator _inputValidator;
 
-        public DailyCountsController(IDailyCountRepository dailyCountRepository)
+        public DailyCountsController(IDailyCountRepository dailyCountRepository, 
+            IInputValidator inputValidator)
         {
             _dailyCountRepository = dailyCountRepository;
+            _inputValidator = inputValidator;
         }
 
         // GET: api/DailyCounts
@@ -34,6 +38,11 @@ namespace Covid.Controllers
         [HttpGet("Filter")]
         public async Task<ActionResult<IEnumerable<DailyCount>>> Filter(string county, string state)
         {
+            if (!_inputValidator.IsValidState(state))
+            {
+                return BadRequest("Invalid State Input");
+            }
+
             var dailyCounts = await _dailyCountRepository.Filter(county, state);
 
             return this.ApiResponse($"Filter By {county}, {state}", dailyCounts);
@@ -44,6 +53,11 @@ namespace Covid.Controllers
         public async Task<ActionResult<IEnumerable<DailyCount>>> Range(string column = "Cases",
             int min = 0, int max = 200000)
         {
+            if (!_inputValidator.IsValidColumn(column))
+            {
+                return BadRequest("Invalid Column Input");
+            }
+
             var dailyCounts = await _dailyCountRepository.Range(column, min, max);
 
             return this.ApiResponse($"Range By {column}", dailyCounts);
@@ -51,8 +65,13 @@ namespace Covid.Controllers
 
         // GET: api/DailyCounts/DateRange/5
         [HttpGet("DateRange/{month}")]
-        public async Task<ActionResult<IEnumerable<DailyCount>>> DateRange(int month)
+        public async Task<ActionResult<IEnumerable<DailyCount>>> DateRange(int month = 9)
         {
+            if (!_inputValidator.IsValidMonth(month))
+            {
+                return BadRequest("Invalid Month Input");
+            }
+
             var dailyCounts = await _dailyCountRepository.DateRange(month);
 
             return this.ApiResponse($"Dates In Month {month}", dailyCounts);
@@ -60,9 +79,34 @@ namespace Covid.Controllers
 
         // GET: api/DailyCounts/Query
         [HttpGet("Query")]
-        public async Task<ActionResult<IEnumerable<DailyCount>>> Query(string county, string state, string order,
-            int month = 9, string column = "Date", int limit = 100)
+        public async Task<ActionResult<IEnumerable<DailyCount>>> Query(string county, string state, 
+            string order = "asc", int month = 9, string column = "Date", int limit = 100)
         {
+            if (!_inputValidator.IsValidCounty(county))
+            {
+                return BadRequest("Invalid County Input");
+            }
+
+            if (!_inputValidator.IsValidState(state))
+            {
+                return BadRequest("Invalid State Input");
+            }
+
+            if (!_inputValidator.IsValidMonth(month))
+            {
+                return BadRequest("Invalid Month Input");
+            }
+
+            if (!_inputValidator.IsValidOrder(order))
+            {
+                return BadRequest("Invalid Order Input");
+            }
+
+            if (!_inputValidator.IsValidColumn(column))
+            {
+                return BadRequest("Invalid Column Input");
+            }
+
             var dailyCounts = await _dailyCountRepository.Query(county, state, order, month, column, limit);
 
             return this.ApiResponse(
@@ -76,6 +120,11 @@ namespace Covid.Controllers
         [HttpGet("Max/{column?}")]
         public async Task<ActionResult<IEnumerable<DailyCount>>> GetMax(string column = "Cases")
         {
+            if (!_inputValidator.IsValidColumn(column))
+            {
+                return BadRequest("Invalid Column Input");
+            }
+
             var dailyCount = await _dailyCountRepository.GetMax(column);
 
             return this.ApiResponse($"Max {column}", dailyCount);

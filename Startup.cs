@@ -57,6 +57,7 @@ namespace Covid
             });
 
             services.AddScoped<ICsvImporter, CsvImporter>();
+            services.AddScoped<IInputValidator, InputValidator>();
             services.AddScoped<IAppUserRepository, AppUserRepository>();
             services.AddScoped<ICountListRepository, CountListRepository>();
             services.AddScoped<IDailyCountRepository, DailyCountRepository>();
