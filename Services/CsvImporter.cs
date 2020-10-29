@@ -5,6 +5,7 @@ using CsvHelper.Configuration;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Covid.Services
     public interface ICsvImporter
     {
         public Task<string> ImportDailyCounts(ApplicationDbContext context);
+        public List<DailyCount> GetDailyCountRecords();
     }
 
     public class CsvImporter : ICsvImporter
@@ -43,6 +45,18 @@ namespace Covid.Services
                 }
 
                 return "DailyCount Import Successful!";
+            }
+        }
+
+        public List<DailyCount> GetDailyCountRecords()
+        {
+            using (var reader = new StreamReader(@"C:\Users\Ryan\source\repos\Covid\Data\us_counties_covid19_daily.csv"))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csv.Configuration.RegisterClassMap<DailyCountMap>();
+                var dailyCounts = csv.GetRecords<DailyCount>().ToList();
+
+                return dailyCounts;
             }
         }
     }

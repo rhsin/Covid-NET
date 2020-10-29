@@ -24,21 +24,19 @@ namespace Covid.Repositories
 
     public class DailyCountRepository : IDailyCountRepository
     {
-        private readonly ApplicationDbContext _context;
         private readonly IConfiguration _config;
 
-        public DailyCountRepository(ApplicationDbContext context, IConfiguration config)
+        public DailyCountRepository(IConfiguration config)
         {
-            _context = context;
             _config = config;
         }
 
         public async Task<IEnumerable<DailyCount>> GetDailyCounts()
         {
-            var dailyCounts = from dc in _context.DailyCount
-                              select dc;
+            string sql = @"SELECT TOP 100 *
+                           FROM DailyCount";
 
-            return await dailyCounts.Take(100).ToListAsync();
+            return await this.ExecuteCountQuery(sql, null);
         }
 
         public async Task<IEnumerable<DailyCount>> Filter(string county, string state)
