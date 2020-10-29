@@ -1,10 +1,7 @@
-﻿using Covid.Data;
-using Covid.DTO;
-using Covid.Models;
+﻿using Covid.DTO;
 using Covid.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +13,10 @@ namespace Covid.Controllers
     [ApiController]
     public class CountListsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly ICountListRepository _countListRepository;
 
-        public CountListsController(ApplicationDbContext context, ICountListRepository countListRepository)
+        public CountListsController(ICountListRepository countListRepository)
         {
-            _context = context;
             _countListRepository = countListRepository;
         }
 
@@ -70,69 +65,6 @@ namespace Covid.Controllers
             return Ok($"DailyCount {countId} Removed From CountList {listId}!");
         }
 
-        // PUT: api/CountLists/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCountList(int id, CountList countList)
-        {
-            if (id != countList.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(countList).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CountListExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/CountLists
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
-        [HttpPost]
-        public async Task<ActionResult<CountList>> PostCountList(CountList countList)
-        {
-            _context.CountList.Add(countList);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCountList", new { id = countList.Id }, countList);
-        }
-
-        // DELETE: api/CountLists/5
-        [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<CountList>> DeleteCountList(int id)
-        {
-            var countList = await _context.CountList.FindAsync(id);
-            if (countList == null)
-            {
-                return NotFound();
-            }
-
-            _context.CountList.Remove(countList);
-            await _context.SaveChangesAsync();
-
-            return countList;
-        }
-
         private ActionResult<IEnumerable<CountListDTO>> ApiResponse(string method,
             IEnumerable<CountListDTO> countLists)
         {
@@ -142,11 +74,6 @@ namespace Covid.Controllers
                 Count = countLists.Count(),
                 Data = countLists
             });
-        }
-
-        private bool CountListExists(int id)
-        {
-            return _context.CountList.Any(e => e.Id == id);
         }
     }
 }
