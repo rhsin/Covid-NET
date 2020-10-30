@@ -16,13 +16,15 @@ namespace Covid.Controllers
     public class DailyCountsController : ControllerBase
     {
         private readonly IDailyCountRepository _dailyCountRepository;
+        private readonly IApiResponse _apiResponse;
         private readonly IInputValidator _inputValidator;
 
-        public DailyCountsController(IDailyCountRepository dailyCountRepository, 
-            IInputValidator inputValidator)
+        public DailyCountsController(IDailyCountRepository dailyCountRepository,
+            IApiResponse apiResponse, IInputValidator inputValidator)
         {
             _dailyCountRepository = dailyCountRepository;
             _inputValidator = inputValidator;
+            _apiResponse = apiResponse;
         }
 
         // GET: api/DailyCounts
@@ -31,7 +33,7 @@ namespace Covid.Controllers
         {
             var dailyCounts = await _dailyCountRepository.GetDailyCounts();
 
-            return Ok(this.ApiResponse("All DailyCounts", dailyCounts));
+            return Ok(_apiResponse.Json("All DailyCounts", dailyCounts));
         }
 
         // GET: api/DailyCounts/Filter
@@ -45,7 +47,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.Filter(county, state);
 
-            return Ok(this.ApiResponse($"Filter By {county}, {state}", dailyCounts));
+            return Ok(_apiResponse.Json($"Filter By {county}, {state}", dailyCounts));
         }
 
         // GET: api/DailyCounts/Range/Cases
@@ -60,7 +62,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.Range(column, min, max);
 
-            return Ok(this.ApiResponse($"Range By {column}", dailyCounts));
+            return Ok(_apiResponse.Json($"Range By {column}", dailyCounts));
         }
 
         // GET: api/DailyCounts/DateRange/5
@@ -74,7 +76,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.DateRange(month);
 
-            return Ok(this.ApiResponse($"Dates In Month {month}", dailyCounts));
+            return Ok(_apiResponse.Json($"Dates In Month {month}", dailyCounts));
         }
 
         // GET: api/DailyCounts/Query
@@ -109,7 +111,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.Query(county, state, order, month, column, limit);
 
-            return Ok(this.ApiResponse(
+            return Ok(_apiResponse.Json(
                 $"Query By County: {county}, State: {state}, Order: {order}," +
                 $" Month: {month}, Column: {column}, Limit: {limit}",
                 dailyCounts
@@ -127,17 +129,7 @@ namespace Covid.Controllers
 
             var dailyCount = await _dailyCountRepository.GetMax(column);
 
-            return Ok(this.ApiResponse($"Max {column}", dailyCount));
-        }
-
-        public object ApiResponse(string method, IEnumerable<DailyCount> dailyCounts)
-        {
-            return new
-            {
-                Method = method,
-                Count = dailyCounts.Count(),
-                Data = dailyCounts
-            };
+            return Ok(_apiResponse.Json($"Max {column}", dailyCount));
         }
     }
 }

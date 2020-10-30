@@ -1,5 +1,6 @@
 ﻿using Covid.DTO;
 using Covid.Repositories;
+using Covid.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,7 +27,7 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUsers();
 
-            return Ok(this.ApiResponse("All AppUsers", appUsers));
+            return Ok(new ApiResponse().Json("All AppUsers", appUsers));
         }
 
         // GET: api/AppUsers/1
@@ -53,17 +54,7 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUserRole(role);
 
-            return Ok(this.ApiResponse("Find By Role", appUsers));
-        }
-
-        public object ApiResponse(string method, IEnumerable<AppUserDTO> appUsers)
-        {
-            return new
-            {
-                Method = method,
-                Count = appUsers.Count(),
-                Data = appUsers
-            };
+            return Ok(new ApiResponse().Json("Find By Role", appUsers));
         }
     }
 }

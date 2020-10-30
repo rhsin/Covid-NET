@@ -1,5 +1,6 @@
 ﻿using Covid.DTO;
 using Covid.Repositories;
+using Covid.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,7 +27,7 @@ namespace Covid.Controllers
         {
             var countLists = await _countListRepository.GetCountLists();
 
-            return Ok(this.ApiResponse("All CountLists", countLists));
+            return Ok(new ApiResponse().Json("All CountLists", countLists));
         }
 
         // GET: api/CountLists/5
@@ -63,16 +64,6 @@ namespace Covid.Controllers
             await _countListRepository.RemoveDailyCount(listId, countId);
 
             return Ok($"DailyCount {countId} Removed From CountList {listId}!");
-        }
-
-        public object ApiResponse(string method, IEnumerable<CountListDTO> countLists)
-        {
-            return new
-            {
-                Method = method,
-                Count = countLists.Count(),
-                Data = countLists
-            };
         }
     }
 }
