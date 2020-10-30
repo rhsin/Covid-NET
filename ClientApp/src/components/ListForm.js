@@ -18,6 +18,7 @@ function ListForm(props) {
             onChange={e => selectUser(e.target.value)} 
             id='selectUser'
           >
+            <option>All</option>
             {users.map(user => 
               <option value={user.accountId} key={user.accountId}>
                 {user.name}

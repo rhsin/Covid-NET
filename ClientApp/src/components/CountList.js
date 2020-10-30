@@ -13,14 +13,14 @@ function CountList() {
   const [listId, setListId] = useState(null);
 
   const dailyCountList = countLists.map(countList => countList.countListDailyCounts);
-
+    
   const selectUser = (id) => {
     // eslint-disable-next-line
     const user = users.find(user => user.accountId == id);
     setUser(user);
   };
 
-  const handleClick = (id) => {
+  const handleClick = (listId, id) => {
     handleCount('Remove', listId, id);
     setRender();
   };
@@ -47,6 +47,7 @@ function CountList() {
           >
             <thead>
               <tr>
+                <th>List</th>
                 <th>Date</th>
                 <th>County</th>
                 <th>State</th>
@@ -56,8 +57,9 @@ function CountList() {
               </tr>
             </thead>
             <tbody>
-              {dailyCounts.map(item =>
+              {dailyCounts.map(item => item.countListId == listId &&
                 <tr key={item.dailyCount.id}>
+                  <td>{item.countListId}</td>
                   <td>{item.dailyCount.date}</td>
                   <td>{item.dailyCount.county}</td>
                   <td>{item.dailyCount.state}</td>
@@ -65,7 +67,7 @@ function CountList() {
                   <td>{item.dailyCount.deaths}</td>
                   <td>
                     <Button
-                      onClick={()=> handleClick(item.dailyCount.id)}
+                      onClick={()=> handleClick(item.countListId, item.dailyCount.id)}
                       color='danger'
                     >
                       Remove
