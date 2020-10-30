@@ -4,6 +4,7 @@
 import React, { useContext, useState } from 'react';
 import ListForm from './ListForm';
 import { Context } from './Layout';
+import { dynamicCountList } from './AppHelpers';
 import { Button } from 'reactstrap';
 
 function CountList() {
@@ -12,12 +13,23 @@ function CountList() {
   const [user, setUser] = useState(null);
   const [listId, setListId] = useState(null);
 
-  const dailyCountList = countLists.map(countList => countList.countListDailyCounts);
+  // The dailyCountList uses a helper funtion to filter the list based on the user & listId.
+  // When user is selected the CountList table will only show the CountList matching the selected list.
+  const countListsData = countLists.map(countList => countList.countListDailyCounts);
+  const dailyCountList = dynamicCountList(user, countListsData, listId);
     
   const selectUser = (id) => {
     // eslint-disable-next-line
     const user = users.find(user => user.accountId == id);
     setUser(user);
+  };
+
+  // CountList tables will only be displayed (when user is selected) if not empty
+  const showTable = (list) => {
+    if (user) {
+      return list.length > 0;
+    } 
+    return true;
   };
 
   const handleClick = (listId, id) => {
@@ -39,7 +51,7 @@ function CountList() {
         setListId={id => setListId(id)} 
       />
       <div className='card'>
-        {dailyCountList.map((dailyCounts, index) => dailyCounts.length > 0 &&
+        {dailyCountList.map((dailyCounts, index) => showTable(dailyCounts) &&
           <table 
             key={index} 
             className='table table-striped' 
@@ -57,7 +69,7 @@ function CountList() {
               </tr>
             </thead>
             <tbody>
-              {dailyCounts.map(item => item.countListId == listId &&
+              {dailyCounts.map(item => 
                 <tr key={item.dailyCount.id}>
                   <td>{item.countListId}</td>
                   <td>{item.dailyCount.date}</td>
