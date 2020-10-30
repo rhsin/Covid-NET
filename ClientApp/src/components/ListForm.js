@@ -1,3 +1,6 @@
+// The SelectList form shows the countList Id for the selected user ONLY
+// when selected by the SelectUser form, no defaults.
+
 import React from 'react';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 

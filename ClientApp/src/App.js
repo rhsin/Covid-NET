@@ -1,3 +1,6 @@
+// This app component was modified from .NET Core's React template, using updated npm packages
+// and converting to a functional component
+
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';

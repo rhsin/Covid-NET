@@ -1,3 +1,6 @@
+// The handleCount function is passed through Context to delete
+// entry in join table (CountList & DailyCount)
+
 import React, { useContext, useState } from 'react';
 import ListForm from './ListForm';
 import { Context } from './Layout';

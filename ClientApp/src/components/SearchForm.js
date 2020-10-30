@@ -1,10 +1,14 @@
+// The imported urlQuery function returns a url string from the parameters passed 
+// to a template literal. Then the fetchCounts function passed through Context updates
+// the global dailyCounts. 
+
 import React, { useContext, useState } from 'react';
 import { Context } from './Layout';
 import { urlQuery, monthList } from'./AppConstants';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function SearchForm({ setListId }) {
-  const { fetchCounts } = useContext(Context);
+  const { users, fetchCounts } = useContext(Context);
 
   const [county, setCounty] = useState('');
   const [state, setState] = useState('');
@@ -83,11 +87,12 @@ function SearchForm({ setListId }) {
             onChange={e => setListId(e.target.value)} 
             id='selectList'
           >
-            <option value={5}>5</option>
-            <option value={6}>6</option>
-            <option value={7}>7</option>
-            <option value={8}>8</option>
-            <option value={9}>9</option>
+            {users.map(user => 
+              user.countLists.map(list => 
+                <option value={list.id} key={list.id}>
+                  {list.id}
+                </option>
+            ))}    
           </Input>
         </FormGroup>
       </Form>

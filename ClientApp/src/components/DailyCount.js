@@ -1,3 +1,6 @@
+// The handleCount function is passed through Context to create
+// entry in join table (CountList & DailyCount)
+
 import React, { useContext, useState } from 'react';
 import SearchForm from './SearchForm';
 import { Context } from './Layout';
@@ -34,7 +37,7 @@ function DailyCount() {
             </tr>
           </thead>
           <tbody>
-            {dailyCounts && dailyCounts.map(dailyCount =>
+            {dailyCounts.map(dailyCount =>
               <tr key={dailyCount.id}>
                 <td>{dailyCount.date}</td>
                 <td>{dailyCount.county}</td>
