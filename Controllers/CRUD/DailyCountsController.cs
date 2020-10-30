@@ -20,7 +20,7 @@ namespace Covid.Controllers.CRUD
             _context = context;
         }
 
-        // GET: api/DailyCounts/5
+        // GET: CRUD/DailyCounts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DailyCount>> GetDailyCount(int id)
         {
@@ -34,7 +34,7 @@ namespace Covid.Controllers.CRUD
             return dailyCount;
         }
 
-        // PUT: api/DailyCounts/5
+        // PUT: CRUD/DailyCounts/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [Authorize]
@@ -67,7 +67,7 @@ namespace Covid.Controllers.CRUD
             return NoContent();
         }
 
-        // POST: api/DailyCounts
+        // POST: CRUD/DailyCounts
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [Authorize]
@@ -80,7 +80,7 @@ namespace Covid.Controllers.CRUD
             return CreatedAtAction("GetDailyCount", new { id = dailyCount.Id }, dailyCount);
         }
 
-        // DELETE: api/DailyCounts/5
+        // DELETE: CRUD/DailyCounts/5
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<DailyCount>> DeleteDailyCount(int id)

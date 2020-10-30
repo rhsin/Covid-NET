@@ -26,7 +26,7 @@ namespace Covid.Controllers
         {
             var countLists = await _countListRepository.GetCountLists();
 
-            return this.ApiResponse("All CountLists", countLists);
+            return Ok(this.ApiResponse("All CountLists", countLists));
         }
 
         // GET: api/CountLists/5
@@ -65,15 +65,14 @@ namespace Covid.Controllers
             return Ok($"DailyCount {countId} Removed From CountList {listId}!");
         }
 
-        private ActionResult<IEnumerable<CountListDTO>> ApiResponse(string method,
-            IEnumerable<CountListDTO> countLists)
+        public object ApiResponse(string method, IEnumerable<CountListDTO> countLists)
         {
-            return Ok(new
+            return new
             {
                 Method = method,
                 Count = countLists.Count(),
                 Data = countLists
-            });
+            };
         }
     }
 }

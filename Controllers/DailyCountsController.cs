@@ -31,7 +31,7 @@ namespace Covid.Controllers
         {
             var dailyCounts = await _dailyCountRepository.GetDailyCounts();
 
-            return this.ApiResponse("All DailyCounts", dailyCounts);
+            return Ok(this.ApiResponse("All DailyCounts", dailyCounts));
         }
 
         // GET: api/DailyCounts/Filter
@@ -45,7 +45,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.Filter(county, state);
 
-            return this.ApiResponse($"Filter By {county}, {state}", dailyCounts);
+            return Ok(this.ApiResponse($"Filter By {county}, {state}", dailyCounts));
         }
 
         // GET: api/DailyCounts/Range/Cases
@@ -60,7 +60,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.Range(column, min, max);
 
-            return this.ApiResponse($"Range By {column}", dailyCounts);
+            return Ok(this.ApiResponse($"Range By {column}", dailyCounts));
         }
 
         // GET: api/DailyCounts/DateRange/5
@@ -74,7 +74,7 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.DateRange(month);
 
-            return this.ApiResponse($"Dates In Month {month}", dailyCounts);
+            return Ok(this.ApiResponse($"Dates In Month {month}", dailyCounts));
         }
 
         // GET: api/DailyCounts/Query
@@ -109,11 +109,11 @@ namespace Covid.Controllers
 
             var dailyCounts = await _dailyCountRepository.Query(county, state, order, month, column, limit);
 
-            return this.ApiResponse(
+            return Ok(this.ApiResponse(
                 $"Query By County: {county}, State: {state}, Order: {order}," +
                 $" Month: {month}, Column: {column}, Limit: {limit}",
                 dailyCounts
-            );
+            ));
         }
 
         // GET: api/DailyCounts/Max/Cases
@@ -127,18 +127,17 @@ namespace Covid.Controllers
 
             var dailyCount = await _dailyCountRepository.GetMax(column);
 
-            return this.ApiResponse($"Max {column}", dailyCount);
+            return Ok(this.ApiResponse($"Max {column}", dailyCount));
         }
 
-        private ActionResult<IEnumerable<DailyCount>> ApiResponse(string method,
-            IEnumerable<DailyCount> dailyCounts)
+        public object ApiResponse(string method, IEnumerable<DailyCount> dailyCounts)
         {
-            return Ok(new
+            return new
             {
                 Method = method,
                 Count = dailyCounts.Count(),
                 Data = dailyCounts
-            });
+            };
         }
     }
 }

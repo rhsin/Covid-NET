@@ -26,7 +26,7 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUsers();
 
-            return this.ApiResponse("All AppUsers", appUsers);
+            return Ok(this.ApiResponse("All AppUsers", appUsers));
         }
 
         // GET: api/AppUsers/1
@@ -53,18 +53,17 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUserRole(role);
 
-            return this.ApiResponse("Find By Role", appUsers);
+            return Ok(this.ApiResponse("Find By Role", appUsers));
         }
 
-        private ActionResult<IEnumerable<AppUserDTO>> ApiResponse(string method,
-            IEnumerable<AppUserDTO> appUsers)
+        public object ApiResponse(string method, IEnumerable<AppUserDTO> appUsers)
         {
-            return Ok(new
+            return new
             {
                 Method = method,
                 Count = appUsers.Count(),
                 Data = appUsers
-            });
+            };
         }
     }
 }
