@@ -56,7 +56,6 @@ namespace Covid
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddScoped<IApiResponse, ApiResponse>();
             services.AddScoped<ICsvImporter, CsvImporter>();
             services.AddScoped<IInputValidator, InputValidator>();
             services.AddScoped<IAppUserRepository, AppUserRepository>();

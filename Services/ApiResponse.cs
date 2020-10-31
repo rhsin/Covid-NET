@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Covid.Services
 {
     public interface IApiResponse
     {
-        public object Json(string method, IEnumerable<object> data);
+        public string Method { get; set; }
+        public int Count { get; set; }
+        public IEnumerable<object> Data { get; set; }
     }
 
     public class ApiResponse : IApiResponse
     {
-        public object Json(string method, IEnumerable<object> data)
+        public string Method { get; set; }
+        public int Count { get; set; }
+        public IEnumerable<object> Data { get; set; }
+
+        public ApiResponse(string method, IEnumerable<object> data)
         {
-            return new
-            {
-                Method = method,
-                Count = data.Count(),
-                Data = data
-            };
+            Method = method;
+            Count = data.Count();
+            Data = data;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Covid.Controllers
         {
             var countLists = await _countListRepository.GetCountLists();
 
-            return Ok(new ApiResponse().Json("All CountLists", countLists));
+            return Ok(new ApiResponse("All CountLists", countLists));
         }
 
         // GET: api/CountLists/5

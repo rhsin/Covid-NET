@@ -27,7 +27,7 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUsers();
 
-            return Ok(new ApiResponse().Json("All AppUsers", appUsers));
+            return Ok(new ApiResponse("All AppUsers", appUsers));
         }
 
         // GET: api/AppUsers/1
@@ -56,7 +56,7 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUserRole(role);
 
-            return Ok(new ApiResponse().Json("Find By Role", appUsers));
+            return Ok(new ApiResponse("Find By Role", appUsers));
         }
     }
 }
