@@ -35,15 +35,17 @@ namespace Covid.Controllers
         public async Task<ActionResult<CountListDTO>> GetCountList(int id)
         {
             var countLists = await _countListRepository.GetCountLists();
-                
-            var countList = countLists.First(cl => cl.Id == id);
-
-            if (countList == null)
+            
+            try
             {
-                return NotFound();
-            }
+                var countList = countLists.First(cl => cl.Id == id);
 
-            return Ok(new { Method = "Find By Id", Data = countList });
+                return Ok(new { Method = "Find By Id", Data = countList });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/CountLists/DailyCount/Add/5/1

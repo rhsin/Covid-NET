@@ -37,14 +37,16 @@ namespace Covid.Controllers
         {
             var appUsers = await _appUserRepository.GetAppUsers();
 
-            var appUser = appUsers.First(au => au.AccountId == id);
-
-            if (appUser == null)
+            try
             {
-                return NotFound();
-            }
+                var appUser = appUsers.First(au => au.AccountId == id);
 
-            return Ok(new { Method = "Find By Id", Data = appUser });
+                return Ok(new { Method = "Find By Id", Data = appUser });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/AppUsers/Role/User
