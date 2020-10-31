@@ -1,10 +1,10 @@
 
-export const dynamicCountList = (user, dailyCountList, listId) => {
+export const dynamicCountList = (dailyCountLists, user, listId) => {
   if (user) {
-    return dailyCountList.map(dailyCounts => 
+    return dailyCountLists.map(dailyCounts => 
       dailyCounts.filter(dailyCount => dailyCount.countListId == listId));
   } 
   else {
-    return dailyCountList;
+    return dailyCountLists;
   }
 };

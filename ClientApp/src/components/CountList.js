@@ -15,13 +15,18 @@ function CountList() {
 
   // The dailyCountList uses a helper funtion to filter the list based on the user & listId.
   // When user is selected the CountList table will only show the CountList matching the selected list.
-  const countListsData = countLists.map(countList => countList.countListDailyCounts);
-  const dailyCountList = dynamicCountList(user, countListsData, listId);
+  const dailyCountLists = countLists.map(countList => countList.countListDailyCounts);
+  const dailyCountList = dynamicCountList(dailyCountLists, user, listId);
     
   const selectUser = (id) => {
     // eslint-disable-next-line
     const user = users.find(user => user.accountId == id);
-    setUser(user);
+    if (user) {
+      setUser(user);
+    } 
+    else {
+      setUser(null);
+    }
   };
 
   // CountList tables will only be displayed (when user is selected) if not empty
