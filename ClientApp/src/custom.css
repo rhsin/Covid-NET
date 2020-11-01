@@ -31,6 +31,13 @@ table {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
+.card-heading {
+  font-size: large;
+  font-weight: bold;
+  color: navy;
+  margin-top: 1rem;
+}
+
 .covidTable {
   color: navy;
 }

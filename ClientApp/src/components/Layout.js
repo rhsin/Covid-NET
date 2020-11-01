@@ -3,7 +3,7 @@
 
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import authService from './api-authorization/AuthorizeService'
+import authService from './api-authorization/AuthorizeService';
 import { url, listUrl, userUrl } from'./AppConstants';
 import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';

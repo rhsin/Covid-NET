@@ -6,6 +6,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Layout from './components/Layout';
 import DailyCount from './components/DailyCount';
 import CountList from './components/CountList';
+import DailyCountData from './components/DailyCountData';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
@@ -22,6 +23,9 @@ function App() {
           </AuthorizeRoute>
           <AuthorizeRoute path='/count-list'>
             <CountList />
+          </AuthorizeRoute>
+          <AuthorizeRoute path='/count-data'>
+            <DailyCountData />
           </AuthorizeRoute>
           <Route path={ApplicationPaths.ApiAuthorizationPrefix}>
             <ApiAuthorizationRoutes />

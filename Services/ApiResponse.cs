@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,6 +18,7 @@ namespace Covid.Services
         public int Count { get; set; }
         public IEnumerable<object> Data { get; set; }
 
+        [JsonConstructor]
         public ApiResponse(string method, IEnumerable<object> data)
         {
             Method = method;
