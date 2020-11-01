@@ -6,11 +6,11 @@ import { Context } from '../../components/Layout';
 import DailyCount from '../../components/DailyCount';
 
 jest.mock('axios');
-axios.get.mockResolvedValueOnce([]);
+axios.get.mockResolvedValue([{county: 'San Diego'}]);
 
-const fetchCounts = jest.fn();
+const fetchCounts = jest.fn().mockResolvedValue([{county: 'San Diego'}]);
 const store = {
-  dailyCounts: [],
+  dailyCounts: [{county: 'San Diego'}],
   users: [],
   loading: true,
   fetchCounts: ()=> fetchCounts()
@@ -25,13 +25,22 @@ test('renders loading alert', () => {
   expect(screen.getByText(/Loading.../)).toBeInTheDocument();
 });
 
+test('renders dailyCounts from Context', () => {  
+  render(
+    <Context.Provider value={store}>
+      <DailyCount />
+    </Context.Provider>
+  );
+  expect(screen.getByText(/San Diego/)).toBeInTheDocument();
+});
+
 test('submit button calls fetchCounts on click', () => {  
   render(
     <Context.Provider value={store}>
       <DailyCount />
     </Context.Provider>
   );
-  user.type(screen.getByLabelText(/County/), 'San Diego');
+  // user.type(screen.getByLabelText(/County/), 'San Diego');
   const submitButton = screen.getByRole('button', {name: /Submit/});
   user.click(submitButton);
   expect(fetchCounts).toHaveBeenCalledTimes(1);
