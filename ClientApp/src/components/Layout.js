@@ -46,8 +46,10 @@ function Layout({ children }) {
     countLists: countLists,
     users: users,
     loading: loading,
+    render: render,
     fetchCounts: (url) => fetchData(url, counts => setDailyCounts(counts)),
     handleCount: (url, action, listId, id) => handleCount(url, action, listId, id),
+    setLoading: (loading) => setLoading(loading),
     setRender: () => setRender(!render) 
   };
 

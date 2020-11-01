@@ -49,7 +49,7 @@ namespace Covid.Repositories
                 Month = month
             };
 
-            string sqlData = $@"SELECT TOP 31 Cases
+            string sqlData = $@"SELECT TOP 31 Id, Date, County, State, Cases
                                 FROM DailyCount
                                 WHERE LOWER(County) LIKE LOWER(@County) 
                                 AND LOWER(State) LIKE LOWER(@State)
@@ -68,7 +68,7 @@ namespace Covid.Repositories
             var value = await this.ExecuteQuery(sqlAvg, parameters);
             var data = await this.ExecuteQuery(sqlData, parameters);
 
-            return new { Value = value, Count = 31, Data = data };
+            return new { Value = value, MaxCount = 31, Data = data };
         }
 
         private async Task<object> ExecuteQuery(string sql, object parameters)

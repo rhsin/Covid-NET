@@ -1,21 +1,25 @@
 // This component fetches the daily & average case count for the selected county, state, month.
 
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import DataForm from './DataForm';
+import { Context } from './Layout';
 import { urlData } from'./AppConstants';
 
 function DailyCountData() {
+  const { loading, render, setLoading, setRender } = useContext(Context);
+
   const [dailyCounts, setDailyCounts] = useState([]);
   const [average, setAverage] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [render, setRender] = useState(false);
+  const [county, setCounty] = useState('San Diego');
+  const [state, setState] = useState('CA');
+  const [month, setMonth] = useState(9);
 
   useEffect(()=> {
-    fetchData('San Diego', 'CA', 9);
+    fetchData();
   }, [render]);
 
-  const fetchData = async (county, state, month) => {
+  const fetchData = async () => {
     try {
       setLoading(true);
       const response = await axios.get(urlData(county, state, month));
@@ -39,6 +43,9 @@ function DailyCountData() {
       </div>
       <DataForm 
         fetchCounts={(county, state, month) => fetchData(county, state, month)} 
+        setCounty={county => setCounty(county)}
+        setState={state => setState(state)}
+        setMonth={month => setMonth(month)}
         setRender={()=> setRender(!render)}
       />
       <div className='card'>
@@ -54,10 +61,10 @@ function DailyCountData() {
           </thead>
           <tbody>
             {dailyCounts.map(dailyCount =>
-              <tr key={dailyCount.id}>
-                <td>{dailyCount.date}</td>
-                <td>{dailyCount.county}</td>
-                <td>{dailyCount.state}</td>
+              <tr key={dailyCount.Id}>
+                <td>{dailyCount.Date}</td>
+                <td>{dailyCount.County}</td>
+                <td>{dailyCount.State}</td>
                 <td>{dailyCount.Cases}</td>
               </tr>
             )}

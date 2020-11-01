@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { monthList } from'./AppConstants';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-function DataForm({ fetchCounts, setRender }) {
-  const [county, setCounty] = useState('');
-  const [state, setState] = useState('');
-  const [month, setMonth] = useState(1);
+function DataForm(props) {
+  const { fetchCounts, setCounty, setState, setMonth, setRender } = props;
 
   const handleClick = () => {
-    fetchCounts(county, state, month);
+    fetchCounts();
     setRender();
   };
 
