@@ -1,4 +1,6 @@
 // This component fetches the daily & average case count for the selected county, state, month.
+// The imported urlData function returns a url string from the parameters passed 
+// to a template literal.
 
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
@@ -12,11 +14,12 @@ function DailyCountData() {
   const [dailyCounts, setDailyCounts] = useState([]);
   const [average, setAverage] = useState(null);
   const [county, setCounty] = useState('San Diego');
-  const [state, setState] = useState('CA');
+  const [state, setState] = useState('');
   const [month, setMonth] = useState(9);
 
   useEffect(()=> {
     fetchData();
+    // eslint-disable-next-line
   }, [render]);
 
   const fetchData = async () => {
