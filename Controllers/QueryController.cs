@@ -32,9 +32,16 @@ namespace Covid.Controllers
         [HttpGet("Data/Cases/{month?}")]
         public async Task<ActionResult<object>> GetCasesData(string county, string state, int month = 9)
         {
-            var data = await _queryRepository.GetCasesData(county, state, month);
+            try
+            {
+                var data = await _queryRepository.GetCasesData(county, state, month);
 
-            return Ok(new { Method = "Query Cases Data By Month", Data = data });
+                return Ok(new { Method = "Query Cases Data By Month", Data = data });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

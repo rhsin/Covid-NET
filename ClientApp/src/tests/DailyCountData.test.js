@@ -38,6 +38,12 @@ test('renders submit button', () => {
   expect(buttonElement).toBeInTheDocument();
 });
 
+test('renders card heading', () => {
+  const { getByText } = render(<DailyCountData />);
+  const textElement = getByText(/Average/);
+  expect(textElement).toBeInTheDocument();
+});
+
 test('renders table heading', () => {
   const { getByText } = render(<DailyCountData />);
   const tableElement = getByText(/Date/);

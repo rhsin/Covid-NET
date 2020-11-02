@@ -21,7 +21,6 @@ function DailyCount() {
       {loading && <p><em>Loading...</em></p>}
       <div>
         <h1 className='covidTable'>COVID Daily Counts</h1>
-        <p>This component demonstrates fetching data from the server.</p>
       </div>
       <SearchForm setListId={id => setListId(id)} />
       <div className='card'>

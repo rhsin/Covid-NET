@@ -9,11 +9,16 @@ jest.mock('axios');
 axios.get.mockResolvedValue([{county: 'San Diego'}]);
 
 const fetchCounts = jest.fn().mockResolvedValue([{county: 'San Diego'}]);
+const handleCount = jest.fn();
+const setRender = jest.fn();
+
 const store = {
   dailyCounts: [{county: 'San Diego'}],
   users: [],
   loading: true,
-  fetchCounts: ()=> fetchCounts()
+  fetchCounts: ()=> fetchCounts(),
+  handleCount: ()=> handleCount(),
+  setRender: ()=> setRender()
 };
 
 test('renders loading alert', () => {  
@@ -40,10 +45,34 @@ test('submit button calls fetchCounts on click', () => {
       <DailyCount />
     </Context.Provider>
   );
-  // user.type(screen.getByLabelText(/County/), 'San Diego');
   const submitButton = screen.getByRole('button', {name: /Submit/});
   user.click(submitButton);
   expect(fetchCounts).toHaveBeenCalledTimes(1);
+});
+
+test('save button renders after dailyCounts fetched', () => {  
+  render(
+    <Context.Provider value={store}>
+      <DailyCount />
+    </Context.Provider>
+  );
+  user.type(screen.getByLabelText(/County/), 'San Diego');
+  const submitButton = screen.getByRole('button', {name: /Submit/});
+  user.click(submitButton);
+  const saveButton = screen.getByRole('button', {name: /Save/});
+  expect(saveButton).toBeInTheDocument();
+});
+
+test('save button calls handleCount on click', () => {  
+  render(
+    <Context.Provider value={store}>
+      <DailyCount />
+    </Context.Provider>
+  );
+  const saveButton = screen.getByRole('button', {name: /Save/});
+  user.click(saveButton);
+  expect(fetchCounts).toHaveBeenCalledTimes(2);
+  expect(handleCount).toHaveBeenCalledTimes(1);
 });
 
 

@@ -47,7 +47,6 @@ function CountList() {
       {loading && <p><em>Loading...</em></p>}
       <div>
         <h1 className='covidTable'>COVID DailyCount Lists</h1>
-        <p>This component demonstrates fetching data from the server.</p>
       </div>
       <ListForm
         users={users}
