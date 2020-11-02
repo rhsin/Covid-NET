@@ -4,7 +4,8 @@
 
 import React, { useContext, useState } from 'react';
 import { Context } from './Layout';
-import { urlQuery, monthList } from'./AppConstants';
+import { monthList } from'./AppConstants';
+import { urlQuery } from'./AppHelpers';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 function SearchForm({ setListId }) {

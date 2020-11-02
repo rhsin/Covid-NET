@@ -4,6 +4,7 @@
 import React, { useContext, useState } from 'react';
 import SearchForm from './SearchForm';
 import { Context } from './Layout';
+import { dateFormat } from './AppHelpers';
 import { Button } from 'reactstrap';
 
 function DailyCount() {
@@ -38,7 +39,7 @@ function DailyCount() {
           <tbody>
             {dailyCounts.map(dailyCount =>
               <tr key={dailyCount.id}>
-                <td>{dailyCount.date}</td>
+                <td>{dateFormat(dailyCount.date)}</td>
                 <td>{dailyCount.county}</td>
                 <td>{dailyCount.state}</td>
                 <td>{dailyCount.cases}</td>

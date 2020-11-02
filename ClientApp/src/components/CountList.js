@@ -4,7 +4,7 @@
 import React, { useContext, useState } from 'react';
 import ListForm from './ListForm';
 import { Context } from './Layout';
-import { dynamicCountList } from './AppHelpers';
+import { dynamicCountList, dateFormat } from './AppHelpers';
 import { Button } from 'reactstrap';
 
 function CountList() {
@@ -76,7 +76,7 @@ function CountList() {
               {dailyCounts.map(item => 
                 <tr key={item.dailyCount.id}>
                   <td>{item.countListId}</td>
-                  <td>{item.dailyCount.date}</td>
+                  <td>{dateFormat(item.dailyCount.date)}</td>
                   <td>{item.dailyCount.county}</td>
                   <td>{item.dailyCount.state}</td>
                   <td>{item.dailyCount.cases}</td>

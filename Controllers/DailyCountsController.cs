@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Covid.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DailyCountsController : ControllerBase

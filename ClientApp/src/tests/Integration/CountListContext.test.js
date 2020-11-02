@@ -1,12 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 import user from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { Context } from '../../components/Layout';
 import CountList from '../../components/CountList';
-
-jest.mock('axios');
-axios.get.mockResolvedValue([{county: 'San Diego'}]);
 
 const handleCount = jest.fn();
 const setRender = jest.fn();

@@ -49,7 +49,7 @@ namespace Covid.Controllers
         }
 
         // POST: api/CountLists/DailyCount/Add/5/1
-        //[Authorize]
+        [Authorize]
         [HttpPost("DailyCount/Add/{listId}/{countId}")]
         public async Task<ActionResult> AddDailyCount(int listId, int countId)
         {
@@ -59,7 +59,7 @@ namespace Covid.Controllers
         }
 
         // POST: api/CountLists/DailyCount/Remove/5/1
-        //[Authorize]
+        [Authorize]
         [HttpPost("DailyCount/Remove/{listId}/{countId}")]
         public async Task<ActionResult> RemoveDailyCount(int listId, int countId)
         {

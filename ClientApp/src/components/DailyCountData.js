@@ -6,7 +6,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import DataForm from './DataForm';
 import { Context } from './Layout';
-import { urlData } from'./AppConstants';
+import { urlData, dateFormat } from'./AppHelpers';
 
 function DailyCountData() {
   const { loading, render, setLoading, setRender } = useContext(Context);
@@ -64,7 +64,7 @@ function DailyCountData() {
           <tbody>
             {dailyCounts.map(dailyCount =>
               <tr key={dailyCount.Id}>
-                <td>{dailyCount.Date}</td>
+                <td>{dateFormat(dailyCount.Date)}</td>
                 <td>{dailyCount.County}</td>
                 <td>{dailyCount.State}</td>
                 <td>{dailyCount.Cases}</td>
