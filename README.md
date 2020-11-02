@@ -16,14 +16,17 @@ Users can use the search form to query specific data by county, state, & month. 
 ![](/Dailycount.png?raw=true)
 
 
+
 Users can also view, add, & remove entries from their list, and see other user lists through the select forms.
 
 ![](/Countlist.png?raw=true)
 
 
+
 Historical case data can be isolated by month for further analysis such as monthly averages or trends.
 
 ![](/Dailycountdata.png?raw=true)
+
 
 
 ## Mobile support
@@ -37,7 +40,8 @@ This app uses a responsive grid to cater to different devices & sizes.
 - [Reactstrap](https://reactstrap.github.io/) v8.1.0
 
 
-## Testing - https://github.com/rhsin/Covid-NET-Tests
+## Testing 
+- https://github.com/rhsin/Covid-NET-Tests
 - [XUnit](https://xunit.net/) v2.4.0
 - [React Testing Library](https://xunit.net/) v11.1.0
 
